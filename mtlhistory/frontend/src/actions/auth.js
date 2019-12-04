@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 
-export const login = ({ username, password }) => dispatch => {
+export const login = (username, password) => dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -72,7 +72,8 @@ export const logout = () => (dispatch, getState) => {
 }
 
 export const TokenConfig = getState => {
-    const token = getState.auth.token
+
+    const token = getState().auth.token
 
     const config = {
         headers: {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { logout } from '../actions/auth'
+
 class Header extends Component {
     static propTypes = {
         auth: PropTypes.object.isRequired,

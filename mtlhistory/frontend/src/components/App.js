@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import ReactDOM from 'react-dom'
 import MapContainer from './MapContainer'
+import MapContainer2 from './MapContainer2'
 import Header from './Header'
 import {
   HashRouter as Router,
@@ -14,6 +15,7 @@ import Login from "./accounts/Login"
 import store from '../store'
 import { Provider } from 'react-redux'
 
+
 class App extends Component {
   render() {
     return (
@@ -23,7 +25,7 @@ class App extends Component {
             <Header />
             <div className="container"></div>
             <Switch>
-              <Route exact path="/" component={MapContainer} />
+              <Route exact path="/" component={MapContainer2} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
 

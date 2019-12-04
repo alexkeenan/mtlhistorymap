@@ -21,7 +21,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         return user
 
-class LoginSerializer(serializers.ModelSerializer):
+class LoginSerializer(serializers.Serializer):
 
     #still not quite sure what these do
     username=serializers.CharField()
