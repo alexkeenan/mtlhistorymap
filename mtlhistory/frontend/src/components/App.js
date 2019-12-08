@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import ReactDOM from 'react-dom'
 import MapContainer from './MapContainer'
-import MapContainer2 from './MapContainer2'
+import MyStreetView from './MyStreetView'
+//import MapContainer2 from './MapContainer2'
 import Header from './Header'
 import {
   HashRouter as Router,
@@ -16,8 +17,12 @@ import store from '../store'
 import { Provider } from 'react-redux'
 
 
+
 class App extends Component {
+
+
   render() {
+
     return (
       <Provider store={store}>
         <Router>
@@ -25,10 +30,11 @@ class App extends Component {
             <Header />
             <div className="container"></div>
             <Switch>
-              <Route exact path="/" component={MapContainer2} />
+              <Route exact path="/" component={MapContainer} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
 
+              <Route exact path="/teststreetview" component={MyStreetView} />
             </Switch>
             <div />
           </Fragment>
@@ -38,6 +44,7 @@ class App extends Component {
     )
   }
 }
+
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

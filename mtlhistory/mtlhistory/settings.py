@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'frontend',
     'rest_framework',
     'accounts',
-    'knox'
+    'knox',
+    'memories'
 
 ]
 

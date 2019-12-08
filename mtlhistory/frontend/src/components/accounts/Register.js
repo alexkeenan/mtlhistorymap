@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 
-export class Register extends Component {
+class Register extends Component {
     state = {
         username: "",
         email: "",
