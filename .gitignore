@@ -1,3 +1,5 @@
 pics/
 scrapping_code/
 mtlhistory/frontend/src/components/MapContainer.js
+node_modules
+mtlhistory/memories/models.py

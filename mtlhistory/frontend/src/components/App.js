@@ -33,7 +33,6 @@ class App extends Component {
               <Route exact path="/" component={MapContainer} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
-
               <Route exact path="/teststreetview" component={MyStreetView} />
             </Switch>
             <div />

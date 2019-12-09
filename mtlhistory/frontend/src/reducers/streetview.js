@@ -1,18 +1,19 @@
 import reducers from 'react-redux'
 import {
-    GET_MEMORIES,
+    GET_PANORAMA,
 } from "../actions/types";
 
 const initialState = {
-    memories: []
+    panoramaReady: false
 }
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case GET_MEMORIES:
+        case GET_PANORAMA:
+            console.log("got to reducer")
             return {
                 ...state,
-                memories: action.payload
+                panoramaReady: action.payload
             }
         default:
             return state
