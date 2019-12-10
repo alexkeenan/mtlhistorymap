@@ -60,7 +60,9 @@ class Header extends Component {
                             <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">About</a>
+                            <Link to="/about" className="nav-link">
+                                About
+                            </Link>
                         </li>
                         {isAuthenticated ? memberLink : guestLinks}
                     </ul>

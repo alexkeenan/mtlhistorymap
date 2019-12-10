@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
+import { createMessage } from "../../actions/messages";
 
 class Register extends Component {
     state = {
@@ -20,11 +21,19 @@ class Register extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        const { username, email, password } = this.state
-        const User = {
-            username, password, email
+        const { username, email, password, password2 } = this.state
+        if (password !== password2) {
+            this.props.createMessage({ passwordNotMatch: "Passwords do not match" })
         }
-        this.props.register(User)
+        else {
+            const User = {
+                username,
+                password,
+                email
+            }
+            this.props.register(User)
+        }
+
     }
 
     onChange = e => {
@@ -102,5 +111,5 @@ class Register extends Component {
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 })
-export default connect(mapStateToProps, { register })(Register)
+export default connect(mapStateToProps, { register, createMessage })(Register)
 

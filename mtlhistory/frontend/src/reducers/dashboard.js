@@ -32,8 +32,6 @@ export default function (state = initialState, action) {
                 ...state,
                 activeMarker: action.payload
             }
-
-
         case SET_SELECTEDPLACE: return { ...state, selectedPlace: action.payload }
 
 

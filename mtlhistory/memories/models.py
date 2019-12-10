@@ -38,6 +38,8 @@ class Memory(models.Model):
     address= models.CharField(max_length=50,null=True,default="")
     longitude=models.DecimalField(max_digits=9, decimal_places=6,null=True,blank=True,default=None)
     latitude=models.DecimalField(max_digits=9, decimal_places=6,null=True,blank=True,default=None)
+    heading=models.IntegerField(null=True,blank=True)
+    pitch=models.IntegerField(null=True,blank=True)
     dateofmemory= models.DateField()
     owner=models.ForeignKey(User,related_name="memories",null=True,on_delete=models.SET_NULL)
     category = models.ManyToManyField(MemoryCategory,null=True,blank=True)

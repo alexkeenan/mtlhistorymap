@@ -1,41 +1,57 @@
 import React, { Component, Fragment } from 'react'
 import ReactDOM from 'react-dom'
-import MapContainer from './MapContainer'
-//import MapContainer2 from './MapContainer2'
-import Header from './Header'
+
 import {
   HashRouter as Router,
   Route,
   Switch
 } from 'react-router-dom'
 
+import { Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+import Alerts from './Alerts'
+
+import MapContainer from './MapContainer'
+import Header from './Header'
+import About from './About'
 import Register from "./accounts/Register"
 import Login from "./accounts/Login"
+import { loadUser } from "../actions/auth";
+
 
 import store from '../store'
 import { Provider } from 'react-redux'
 
-
+// Alert Options
+const alertOptions = {
+  timeout: 3000,
+  position: "top center"
+};
 
 class App extends Component {
-
-
+  componentDidMount() {
+    store.dispatch(loadUser());
+  }
+  //<Alerts />
   render() {
-
     return (
       <Provider store={store}>
-        <Router>
-          <Fragment>
-            <Header />
-            <div className="container"></div>
-            <Switch>
-              <Route exact path="/" component={MapContainer} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-            </Switch>
-            <div />
-          </Fragment>
-        </Router>
+        <AlertProvider template={AlertTemplate} {...alertOptions}>
+          <Router>
+            <Fragment>
+              <Header />
+              <Alerts />
+              <div className="container"></div>
+              <Switch>
+                <Route exact path="/" component={MapContainer} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/login" component={Login} />
+              </Switch>
+              <div />
+            </Fragment>
+          </Router>
+        </AlertProvider>
       </Provider>
 
     )

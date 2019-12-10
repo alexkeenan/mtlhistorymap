@@ -4,8 +4,38 @@ import {
     LOGIN_FAIL,
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
-    REGISTER_FAIL
+    REGISTER_FAIL,
+    USER_LOADING,
+    USER_LOADED,
+    AUTH_ERROR
+
 } from "./types";
+
+import { returnErrors } from "./messages";
+
+
+
+// CHECK TOKEN & LOAD USER
+export const loadUser = () => (dispatch, getState) => {
+    // User Loading
+    dispatch({ type: USER_LOADING });
+
+    axios
+        .get("/api/auth/user", TokenConfig(getState))
+        .then(res => {
+            dispatch({
+                type: USER_LOADED,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            dispatch(returnErrors(err.response.data, err.response.status));
+            dispatch({
+                type: AUTH_ERROR
+            });
+        });
+};
+
 
 
 export const login = (username, password) => dispatch => {
@@ -20,12 +50,14 @@ export const login = (username, password) => dispatch => {
     axios
         .post('api/auth/login', body, config)
         .then(res => {
+            console.log("success logging in")
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
             })
         })
         .catch(err => {
+            console.log("error logging in")
             dispatch({
                 type: LOGIN_FAIL
             })
