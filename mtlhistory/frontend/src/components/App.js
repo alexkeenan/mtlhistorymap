@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import ReactDOM from 'react-dom'
 import MapContainer from './MapContainer'
-import MyStreetView from './MyStreetView'
 //import MapContainer2 from './MapContainer2'
 import Header from './Header'
 import {
@@ -33,7 +32,6 @@ class App extends Component {
               <Route exact path="/" component={MapContainer} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
-              <Route exact path="/teststreetview" component={MyStreetView} />
             </Switch>
             <div />
           </Fragment>

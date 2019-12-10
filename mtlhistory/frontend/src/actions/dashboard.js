@@ -24,7 +24,7 @@ export const setActiveMarker = activeMarker => dispatch => {
         payload: activeMarker
     })
 }
-//export const setSelectedPlace = (selectedPlace) => dispatch => {    dispatch({        type: SET_SELECTEDPLACE,        payload: selectedPlace    })}
+export const setSelectedPlace = (selectedPlace) => dispatch => { dispatch({ type: SET_SELECTEDPLACE, payload: selectedPlace }) }
 
 
 

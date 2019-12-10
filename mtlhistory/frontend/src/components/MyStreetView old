@@ -17,7 +17,6 @@ class MyStreetView extends Component {
         mapIsReady: false
     }
 
-    
     componentDidMount() {
         const script = document.createElement("script");
         script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk";
@@ -42,22 +41,13 @@ class MyStreetView extends Component {
             panDiv: null
         }
 
-
         this.mapDiv = React.createRef()
         this.panDiv = React.createRef()
 
-
-        //this.setMapDiv = element => {this.setState({mapDiv: element.current})}
-
-        //this.setPanDiv = element => {this.setState({panDiv: element.current})}
-
-        this.textInput = React.createRef();
-        this.focusTextInput = this.focusTextInput.bind(this);
     }
 
-    /*
-    //never mounts
     componentDidMount() {
+
         console.log('SANITY CHECK')
         // for some reason what I write here just doesn't get executed
         this.setState({
@@ -66,38 +56,27 @@ class MyStreetView extends Component {
         });
         console.log('mounted')
     }
-    */
-
-
-    focusTextInput() {
-        // Explicitly focus the text input using the raw DOM API
-        // Note: we're accessing "current" to get the DOM node
-        this.textInput.current.focus();
-    }
-
-
     render() {
 
         console.log(this.state)
         console.log(this.props.coordinates)
 
-        console.log(this.mapDiv.current)
-        console.log(this.panDiv.current)
-        console.log(this.textInput)
-
-
         var { lat, lng } = this.props.coordinates
         //const coordinates = { lat: 42.345573, lng: -71.098326 };
+        console.log(lat)
+        console.log(lng)
         const coordinates = { lat: parseFloat(lat), lng: parseFloat(lng) };
 
-        /*
+
+        console.log(coordinates)
+
 
         var map = new google.maps.Map(this.state.mapDiv, {
             center: coordinates,
             zoom: 14
         });
 
-        console.log(coordinates)
+
 
         //const panorama = new window.google.maps.StreetViewPanorama(document.getElementById('pano'), {
         const panorama = new window.google.maps.StreetViewPanorama(this.state.panDiv, {
@@ -110,21 +89,8 @@ class MyStreetView extends Component {
 
         map.setStreetView(panorama);
 
-        */
-
         return (
             <div>
-
-                <input
-                    type="text"
-                    ref={this.textInput} />
-
-                <input
-                    type="button"
-                    value="Focus the text input"
-                    onClick={this.focusTextInput}
-                />
-
                 <div id="map" ref={this.mapDiv}></div>
 
                 <div id="pano" ref={this.panDiv}></div>

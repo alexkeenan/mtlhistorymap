@@ -1,5 +1,9 @@
-      #map, #pano {
+      #map, #pano, #memory {
         float: left;
-        height: 400px;
-        width: 800px;
+        height: 100%;
+        width: 50%;
+      }
+      #infoWindowContent{
+        width:800px;
+        height:400px;
       }

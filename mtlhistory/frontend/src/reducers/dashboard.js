@@ -34,7 +34,7 @@ export default function (state = initialState, action) {
             }
 
 
-        //case SET_SELECTEDPLACE:return {                ...state,                selectedPlace: action.payload            }
+        case SET_SELECTEDPLACE: return { ...state, selectedPlace: action.payload }
 
 
         default:
