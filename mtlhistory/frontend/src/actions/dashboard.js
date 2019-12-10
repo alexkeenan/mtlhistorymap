@@ -18,18 +18,13 @@ export const toggleShowPanorama = () => dispatch => {
         type: TOGGLE_SHOWPANORAMA,
     })
 }
-export const setActiveMarker = (activeMarker) => dispatch => {
+export const setActiveMarker = activeMarker => dispatch => {
     dispatch({
         type: SET_ACTIVEMARKER,
         payload: activeMarker
     })
 }
-export const setSelectedPlace = (selectedPlace) => dispatch => {
-    dispatch({
-        type: SET_SELECTEDPLACE,
-        payload: selectedPlace
-    })
-}
+//export const setSelectedPlace = (selectedPlace) => dispatch => {    dispatch({        type: SET_SELECTEDPLACE,        payload: selectedPlace    })}
 
 
 

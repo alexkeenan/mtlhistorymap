@@ -11,10 +11,8 @@ import {
 const initialState = {
     showInfoWindow: false,
     showPanorama: false,
-    aciveMarker: {},
-    selectedPlace: {
-        name: "",
-    },
+    activeMarker: {},
+    //selectedPlace: {name: "",},
 }
 
 export default function (state = initialState, action) {
@@ -32,14 +30,13 @@ export default function (state = initialState, action) {
         case SET_ACTIVEMARKER:
             return {
                 ...state,
-                aciveMarker: action.payload
+                activeMarker: action.payload
             }
-        case SET_SELECTEDPLACE:
-            return {
-                ...state,
-                selectedPlace: action.payload
 
-            }
+
+        //case SET_SELECTEDPLACE:return {                ...state,                selectedPlace: action.payload            }
+
+
         default:
             return state
     }
