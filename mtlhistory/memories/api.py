@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
 from .serializers import MemorySerializer,MemoryCategorySerializer
-from .models import Memory
+from .models import Memory,MemoryCategory
 
 ## is there not a more elegant way of handling authentication? decorator or something?
 
@@ -13,11 +13,11 @@ class JustViewMemories(viewsets.ModelViewSet):
     def get_queryset(self):
         return Memory.objects.all()
 
-
 class MemoryViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
+
     serializer_class = MemorySerializer
 
     def get_queryset(self):
@@ -31,12 +31,15 @@ class MemoryCategoriesViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
+
     serializer_class = MemoryCategorySerializer
 
     def get_queryset(self):
         return MemoryCategory.objects.all()
+        #return MemoryCategory.objects.order_by().values('category').distinct()
+        #return MemoryCategory.objects.order_by().values_list('category').distinct()
+        #return "sanity check"
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
 

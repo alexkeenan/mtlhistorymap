@@ -117,5 +117,6 @@ export const TokenConfig = getState => {
         config.headers["Authorization"] = `Token ${token}`
     }
 
-    return config
+    return config;
 }
+

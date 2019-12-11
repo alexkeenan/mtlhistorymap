@@ -6,11 +6,29 @@ router = routers.DefaultRouter()
 # https://www.django-rest-framework.org/api-guide/routers/
 
 #get memories
-router.register('api/memories', JustViewMemories, 'memories') 
+router.register('api/memories', JustViewMemories, 'view_memories') 
+
+
 
 #Requires authentication, access to 
-router.register('api/memory', MemoryViewSet, 'create_memories')
+router.register('api/memory', MemoryViewSet, 'memories')
+
+
+"""
+FOR SOME REASON, THE URL BELOW WILL NEVER BE FOUND. YOU MUST GET RID OF THE  '/' FOR IT TO WORK. 
+
+
+
 # view or create memory categories
 router.register('api/memory/categories', MemoryCategoriesViewSet, 'memory_categories')
+
+
+"""
+# view or create memory categories
+router.register('api/memorycategories', MemoryCategoriesViewSet, 'memory_categories')
+
+
+
+
 
 urlpatterns = router.urls  # this gives us a list of urls

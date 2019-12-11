@@ -17,7 +17,7 @@ import About from './About'
 import Register from "./accounts/Register"
 import PrivateRoute from "./common/PrivateRoute";
 import Login from "./accounts/Login"
-import AddMemory from "./MemoryForm"
+import MemoryForm from "./MemoryForm"
 
 import { loadUser } from "../actions/auth";
 
@@ -46,7 +46,7 @@ class App extends Component {
               <Alerts />
               <div className="container"></div>
               <Switch>
-                <PrivateRoute exact path="/add-memory" component={AddMemory} />
+                <PrivateRoute exact path="/add-memory" component={MemoryForm} />
                 <Route exact path="/" component={MapContainer} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/about" component={About} />

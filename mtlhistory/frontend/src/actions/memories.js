@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {
-    GET_MEMORIES,
+    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY
 } from "./types";
 import { TokenConfig } from './auth'
 
@@ -19,15 +19,23 @@ export const getMemories = () => (dispatch, getState) => {
 
 
 export const getCategories = () => (dispatch, getState) => {
+    console.log('getting categories')
     axios
-        .get('api/memory/categories', TokenConfig(getState))
+        .get('api/memorycategories', TokenConfig(getState))
         .then(res => {
+            console.log("fetched something")
+            console.log(res)
             dispatch({
                 type: GET_MEMORY_SUBJECT_CATEGORY,
                 payload: res.data
             })
         })
-        .catch(err => console.log(err.response.data))
+        .catch(err => {
+            console.log("ERROR IN RETRIEVAL")
+            console.log(err)
+            console.log(err.response)
+            console.log(err.response.data)
+        })
 }
 
 
@@ -35,7 +43,6 @@ export const getCategories = () => (dispatch, getState) => {
 export const addMemory = memory => (dispatch, getState) => {
 
     //memory will already be an object containing everything I need
-
     axios
         .post('api/memory', memory, TokenConfig(getState))
         .then(res => {
@@ -48,7 +55,6 @@ export const addMemory = memory => (dispatch, getState) => {
 }
 
 //DELETE MEMORY
-
 export const deleteMemory = id => (dispatch, getState) => {
 
     //memory will already be an object containing everything I need
