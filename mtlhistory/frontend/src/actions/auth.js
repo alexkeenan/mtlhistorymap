@@ -20,23 +20,25 @@ export const loadUser = () => (dispatch, getState) => {
     // User Loading
     dispatch({ type: USER_LOADING });
 
-    axios
-        .get("/api/auth/user", TokenConfig(getState))
-        .then(res => {
-            dispatch({
-                type: USER_LOADED,
-                payload: res.data
+    const token = getState().auth.token
+    if (token) {
+        axios
+            .get("/api/auth/user", TokenConfig(getState))
+            .then(res => {
+                dispatch({
+                    type: USER_LOADED,
+                    payload: res.data
+                });
+            })
+            .catch(err => {
+                dispatch(returnErrors(err.response.data, err.response.status));
+                dispatch({
+                    type: AUTH_ERROR
+                });
             });
-        })
-        .catch(err => {
-            dispatch(returnErrors(err.response.data, err.response.status));
-            dispatch({
-                type: AUTH_ERROR
-            });
-        });
+    }
+
 };
-
-
 
 export const login = (username, password) => dispatch => {
     const config = {
@@ -44,7 +46,6 @@ export const login = (username, password) => dispatch => {
             "Content-Type": "application/json"
         }
     }
-
     const body = JSON.stringify({ username, password })
 
     axios
