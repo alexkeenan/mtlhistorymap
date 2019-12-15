@@ -3,9 +3,11 @@ import { getCategories, addMemory } from '../actions/memories'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-class MemoryForm extends React.Component {
+//https://w3path.com/react-image-upload-or-file-upload-with-preview/
+
+export class MemoryForm extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             title: "",
             description: "",
@@ -21,18 +23,13 @@ class MemoryForm extends React.Component {
             dateofmemory: "",
             owner: "",
             category: "",
-        };
+        }
 
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
-
     }
 
-    onSubmit(e) {
-        e.preventDefault();
-        // TODO: do something with -> this.state.file
-        console.log('handle uploading-', this.state.photo);
-    }
+
 
     componentDidMount() {
         console.log("mounted")
@@ -40,62 +37,139 @@ class MemoryForm extends React.Component {
         console.log(this.props.categories)
     }
 
-    onChange(e) {
+    onChange = e => {
         e.preventDefault();
-
         let target = e.target
-        let name = target.name
         let value = null
 
-        console.log("target")
-        console.log(target)
+        if (target.name === "photo") {
 
-        console.log("name")
-        console.log(name)
-
-
-        if (name === "photo") {
-            console.log("name")
             value = target.files[0]
         }
         else {
             value = target.value
         }
 
+        let name = target.name
         this.setState({ [name]: value })
 
-        if (name === "photo") {
+        if (target.name === "photo") {
             let reader = new FileReader();
-
             reader.onloadend = () => {
                 this.setState({
+                    ...this.state,
                     photoPreviewUrl: reader.result
                 });
             }
+            console.log("value")
+            console.log(value)
             reader.readAsDataURL(value)
         }
+
     }
 
-    render() {
-
-        console.log('this.state.photo')
-        console.log(this.state.photo)
-
+    onSubmit = e => {
+        e.preventDefault();
         const { title, description, photo, video, audio,
             address, longitude, latitude, heading, pitch,
             dateofmemory, category } = this.state
 
-        let { photoPreviewUrl } = this.state;
-        let $photoPreview = null;
+        const user = this.props.user
 
-        if (photoPreviewUrl) {
-            $photoPreview = (<img src={photoPreviewUrl} />);
-        } else {
-            $photoPreview = (<div className="previewText">Please select an Image for Preview</div>);
+        const memory = {
+            title, description, photo, video, audio,
+            address, longitude, latitude, heading, pitch,
+            dateofmemory, owner: owner, category
+        };
+
+        this.props.addMemory(memory);
+        //might need a message saying memory was added
+        this.setState({
+            title: "",
+            description: "",
+            photo: "",
+            video: "",
+            audio: "",
+            address: "",
+            longitude: "",
+            latitude: "",
+            heading: "",
+            pitch: "",
+            dateofmemory: "",
+            owner: "",
+            category: "",
+        });
+    };
+
+
+    /*
+ 
+    onInfoWindowOpen(props, e) {
+        var { lat, lng } = this.props.dashboard.selectedPlace.position
+        const coordinates = { lat: parseFloat(lat), lng: parseFloat(lng) };
+ 
+        const markerId = this.props.dashboard.selectedPlace.id
+ 
+        const photoSrc = this.props.memories[markerId].photo
+        const content = (
+            <div>
+                <h3 > {this.props.dashboard.selectedPlace.name}</h3>
+ 
+                <div id="infoWindowContent">
+                    <div id="memory">
+                        <img src={photoSrc} width="100%" height="100%"></img>
+                    </div>
+                    <div id="pano"></div>
+                </div>
+            </div>
+        )
+ 
+        //this.setState({mapDiv: this.mapDiv.current,            panDiv: this.panDiv.current,        });
+ 
+        ReactDOM.render(React.Children.only(content), document.getElementById("InfoWindowContent"));
+ 
+        //var map = new google.maps.Map(            document.getElementById('map'), {center: coordinates,            zoom: 14        });
+ 
+        const panorama = new window.google.maps.StreetViewPanorama(
+            document.getElementById('pano'), {
+            position: coordinates,
+            pov: {
+                heading: 34, pitch: 10
+            }
+        });
+ 
+        console.log(panorama)
+ 
+        console.log('panorama.getPov()')
+        console.log(panorama.getPov())
+ 
+        console.log('panorama.getPosition()')
+        console.log(panorama.getPosition())
+ 
+        panorama.addListener('position_changed', function () {
+            console.log(panorama.getPosition() + '')
+        });
+ 
+        panorama.addListener('pov_changed', function () {
+            console.log('heading ' + panorama.getPov().heading + '')
+            console.log('pitch ' + panorama.getPov().pitch + '')
+            console.log('pitch ' + panorama.getPov().zoom + '')
+        });
+ 
+        */
+    render() {
+        const { title, description, photo, video, audio,
+            address, longitude, latitude, heading, pitch,
+            dateofmemory, category } = this.state
+
+
+        let $photoPreview = (<div className="previewText image-container">Please upload an old photo for Preview</div>);
+        if (this.state.photoPreviewUrl) {
+            $photoPreview = (<div className="image-container" ><img src={this.state.photoPreviewUrl} alt="icon" width="200" /> </div>)
         }
 
-        return (
 
+        return (
             <Fragment>
                 <div className="card card-body mt-4 mb-4">
                     <h2>Add Memory</h2>
@@ -112,9 +186,12 @@ class MemoryForm extends React.Component {
                         </div>
                         <div className="form-group">
                             <label>Image</label>
+                            {$photoPreview}
 
-                            <div className="imgPreview">
-                                {$photoPreview}
+                            <div>
+
+                                <img src={this.state.photoPreview}></img>
+
                             </div>
                             <div >
                                 <input
@@ -123,8 +200,8 @@ class MemoryForm extends React.Component {
                                     name="photo"
                                     accept="image/*"
                                     onChange={this.onChange}
+                                    value={photo}
                                 />
-
                             </div>
 
                         </div>
@@ -215,13 +292,9 @@ class MemoryForm extends React.Component {
                     </form>
                 </div>
             </Fragment>
-
-
-
         )
     }
 }
-
 
 const mapStateToProps = state => ({
     categories: state.memories.categories,

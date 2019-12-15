@@ -25,6 +25,7 @@ router.register('api/memory/categories', MemoryCategoriesViewSet, 'memory_catego
 
 """
 # view or create memory categories
+#for some reason if you do api/memory/categories it won't work, but api/memorycategories will.
 router.register('api/memorycategories', MemoryCategoriesViewSet, 'memory_categories')
 
 
