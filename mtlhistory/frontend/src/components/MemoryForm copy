@@ -3,11 +3,9 @@ import { getCategories, addMemory } from '../actions/memories'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-//https://w3path.com/react-image-upload-or-file-upload-with-preview/
-
-export class MemoryForm extends Component {
+class MemoryForm extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             title: "",
             description: "",
@@ -18,18 +16,24 @@ export class MemoryForm extends Component {
             address: "",
             longitude: -73.567244,
             latitude: 45.498223,
-            heading: "",
-            pitch: "",
+            heading: 5,
+            pitch: 5,
+            zoom: 1,
             dateofmemory: "",
             owner: "",
             category: "",
-        }
+        };
 
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
+        this.mapChange = this.mapChange.bind(this)
     }
 
-
+    onSubmit(e) {
+        e.preventDefault();
+        // TODO: do something with -> this.state.file
+        console.log('handle uploading-', this.state.photo);
+    }
 
     componentDidMount() {
         console.log("mounted")
@@ -37,142 +41,123 @@ export class MemoryForm extends Component {
         console.log(this.props.categories)
     }
 
-    onChange = e => {
+    onChange(e) {
         e.preventDefault();
+
         let target = e.target
+        let name = target.name
         let value = null
 
-        if (target.name === "photo") {
-
+        if (name === "photo") {
             value = target.files[0]
         }
         else {
             value = target.value
         }
 
-        let name = target.name
         this.setState({ [name]: value })
 
-        if (target.name === "photo") {
+        if (name === "photo") {
             let reader = new FileReader();
+
             reader.onloadend = () => {
                 this.setState({
-                    ...this.state,
                     photoPreviewUrl: reader.result
                 });
             }
-            console.log("value")
-            console.log(value)
             reader.readAsDataURL(value)
         }
+    }
+
+
+
+    mapChange = panorama => {
+        console.log("changed stuff in map")
+
+        console.log("position")
+        // MUST HAVE () at the end
+        console.log(panorama.getPosition().lat())
+        console.log(panorama.getPosition().lng())
+
+        console.log("pov")
+        //FOR SOME REASON, no () at the end.
+        console.log(panorama.getPov().heading),
+            console.log(panorama.getPov().pitch),
+            console.log(panorama.getPov().zoom)
+
+
+        var lat = panorama.getPosition().lat()
+        var lng = panorama.getPosition().lng()
+        var heading = panorama.getPov().heading
+        var pitch = panorama.getPov().pitch
+        var zoom = panorama.getPov().zoom
+
+        //will create an infinite loop
+
+        this.setState({
+            latitude: lat,
+            longitude: lng,
+            heading: heading,
+            pitch: pitch,
+            zoom: zoom,
+        })
 
     }
 
-    onSubmit = e => {
-        e.preventDefault();
+
+    render() {
+
         const { title, description, photo, video, audio,
-            address, longitude, latitude, heading, pitch,
+            address, longitude, latitude, heading, pitch, zoom,
             dateofmemory, category } = this.state
 
-        const user = this.props.user
+        const coordinates = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
 
-        const memory = {
-            title, description, photo, video, audio,
-            address, longitude, latitude, heading, pitch,
-            dateofmemory, owner: owner, category
-        };
-
-        this.props.addMemory(memory);
-        //might need a message saying memory was added
-        this.setState({
-            title: "",
-            description: "",
-            photo: "",
-            video: "",
-            audio: "",
-            address: "",
-            longitude: "",
-            latitude: "",
-            heading: "",
-            pitch: "",
-            dateofmemory: "",
-            owner: "",
-            category: "",
-        });
-    };
-
-
-    /*
- 
-    onInfoWindowOpen(props, e) {
-        var { lat, lng } = this.props.dashboard.selectedPlace.position
-        const coordinates = { lat: parseFloat(lat), lng: parseFloat(lng) };
- 
-        const markerId = this.props.dashboard.selectedPlace.id
- 
-        const photoSrc = this.props.memories[markerId].photo
-        const content = (
-            <div>
-                <h3 > {this.props.dashboard.selectedPlace.name}</h3>
- 
-                <div id="infoWindowContent">
-                    <div id="memory">
-                        <img src={photoSrc} width="100%" height="100%"></img>
-                    </div>
-                    <div id="pano"></div>
-                </div>
-            </div>
-        )
- 
-        //this.setState({mapDiv: this.mapDiv.current,            panDiv: this.panDiv.current,        });
- 
-        ReactDOM.render(React.Children.only(content), document.getElementById("InfoWindowContent"));
- 
-        //var map = new google.maps.Map(            document.getElementById('map'), {center: coordinates,            zoom: 14        });
- 
-        const panorama = new window.google.maps.StreetViewPanorama(
+        let panorama = new window.google.maps.StreetViewPanorama(
             document.getElementById('pano'), {
             position: coordinates,
             pov: {
-                heading: 34, pitch: 10
-            }
+                heading,
+                pitch,
+                zoom
+            },
+            position_changed: console.log("changed position")
         });
- 
-        console.log(panorama)
- 
-        console.log('panorama.getPov()')
-        console.log(panorama.getPov())
- 
-        console.log('panorama.getPosition()')
-        console.log(panorama.getPosition())
- 
-        panorama.addListener('position_changed', function () {
-            console.log(panorama.getPosition() + '')
+
+        panorama.addListener('position_changed', () => {
+
+            this.mapChange(panorama)
         });
- 
-        panorama.addListener('pov_changed', function () {
-            console.log('heading ' + panorama.getPov().heading + '')
-            console.log('pitch ' + panorama.getPov().pitch + '')
-            console.log('pitch ' + panorama.getPov().zoom + '')
+
+        panorama.addListener('pov_changed', () => {
+
+            this.mapChange(panorama)
         });
- 
-        */
-    render() {
-        const { title, description, photo, video, audio,
-            address, longitude, latitude, heading, pitch,
-            dateofmemory, category } = this.state
 
 
-        let $photoPreview = (<div className="previewText image-container">Please upload an old photo for Preview</div>);
-        if (this.state.photoPreviewUrl) {
-            $photoPreview = (<div className="image-container" ><img src={this.state.photoPreviewUrl} alt="icon" width="200" /> </div>)
+
+        let { photoPreviewUrl } = this.state;
+        let $photoPreview = null;
+
+        if (photoPreviewUrl) {
+            $photoPreview = (<img src={photoPreviewUrl} />);
+        } else {
+            $photoPreview = (<div className="previewText">Please select an Image for Preview</div>);
         }
 
-
         return (
+
             <Fragment>
                 <div className="card card-body mt-4 mb-4">
                     <h2>Add Memory</h2>
+
+                    <div id="infoWindowContent">
+                        <div id="memory">
+                            {$photoPreview}
+                        </div>
+                        <div id="pano"></div>
+                    </div>
+
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
                             <label>Title</label>
@@ -181,18 +166,12 @@ export class MemoryForm extends Component {
                                 type="text"
                                 name="title"
                                 onChange={this.onChange}
-                                value={title}
+                                value={this.state.title}
                             />
                         </div>
                         <div className="form-group">
                             <label>Image</label>
-                            {$photoPreview}
 
-                            <div>
-
-                                <img src={this.state.photoPreview}></img>
-
-                            </div>
                             <div >
                                 <input
                                     className="form-control"
@@ -200,8 +179,8 @@ export class MemoryForm extends Component {
                                     name="photo"
                                     accept="image/*"
                                     onChange={this.onChange}
-                                    value={photo}
                                 />
+
                             </div>
 
                         </div>
@@ -212,7 +191,7 @@ export class MemoryForm extends Component {
                                 type="text"
                                 name="address"
                                 onChange={this.onChange}
-                                value={address}
+                                value={this.state.address}
                             />
                         </div>
                         <div className="form-group">
@@ -222,7 +201,7 @@ export class MemoryForm extends Component {
                                 type="number"
                                 name="longitude"
                                 onChange={this.onChange}
-                                value={longitude}
+                                value={this.state.longitude}
                             />
                         </div>
                         <div className="form-group">
@@ -232,7 +211,7 @@ export class MemoryForm extends Component {
                                 type="number"
                                 name="latitude"
                                 onChange={this.onChange}
-                                value={latitude}
+                                value={this.state.latitude}
                             />
                         </div>
                         <div className="form-group">
@@ -242,7 +221,7 @@ export class MemoryForm extends Component {
                                 type="number"
                                 name="heading"
                                 onChange={this.onChange}
-                                value={heading}
+                                value={this.state.heading}
                             />
                         </div>
                         <div className="form-group">
@@ -252,7 +231,7 @@ export class MemoryForm extends Component {
                                 type="number"
                                 name="pitch"
                                 onChange={this.onChange}
-                                value={pitch}
+                                value={this.state.pitch}
                             />
                         </div>
                         <div className="form-group">
@@ -262,7 +241,7 @@ export class MemoryForm extends Component {
                                 type="date"
                                 name="dateofmemory"
                                 onChange={this.onChange}
-                                value={dateofmemory}
+                                value={this.state.dateofmemory}
                             />
                         </div>
                         <div className="form-group">
@@ -272,7 +251,7 @@ export class MemoryForm extends Component {
                                 type="text"
                                 name="message"
                                 onChange={this.onChange}
-                                value={description}
+                                value={this.state.description}
                             />
                         </div>
 
@@ -291,11 +270,15 @@ export class MemoryForm extends Component {
                         </div>
                     </form>
                 </div>
-            </Fragment>
+            </Fragment >
+
+
+
         )
     }
-}
 
+
+}
 const mapStateToProps = state => ({
     categories: state.memories.categories,
     user: state.auth.user

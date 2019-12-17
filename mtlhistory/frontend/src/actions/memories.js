@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {
-    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY
+    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM
 } from "./types";
 import { TokenConfig } from './auth'
 
@@ -38,6 +38,31 @@ export const getCategories = () => (dispatch, getState) => {
         })
 }
 
+export const getMemoryForm = () => (dispatch, getState) => {
+    dispatch({
+        type: GET_MEMORY_FORM,
+        payload: {
+
+            title: "",
+            description: "",
+            photo: "",
+            photoPreviewUrl: "",
+            video: "",
+            audio: "",
+            address: "",
+            longitude: -73.5673331320225,
+            latitude: 45.4982432855558,
+            heading: 0,
+            pitch: 0,
+            zoom: 1,
+            dateofmemory: "",
+            owner: "",
+            category: "",
+            counter: 0,
+
+        }
+    })
+}
 
 
 export const addMemory = memory => (dispatch, getState) => {

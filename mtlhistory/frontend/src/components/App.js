@@ -17,7 +17,7 @@ import About from './About'
 import Register from "./accounts/Register"
 import PrivateRoute from "./common/PrivateRoute";
 import Login from "./accounts/Login"
-import MemoryForm from "./MemoryForm"
+import MemoryForm from "./form/MemoryForm"
 
 import { loadUser } from "../actions/auth";
 

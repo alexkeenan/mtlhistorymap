@@ -1,44 +1,34 @@
 import React, { Component, Fragment } from 'react'
-import { getCategories, addMemory } from '../actions/memories'
+import { getCategories, addMemory, getMemoryForm } from '../../actions/memories'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import MemoryStreetView from './MemoryStreetView'
+
+/*
+
+glitchy mess, infinite loops, sometimes functions are recgonized, sometimes they're not
+
+review component did update, and check code from leadmanager as well. 
+https://reactjs.org/docs/react-component.html
+
+*/
+
 
 class MemoryForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            title: "",
-            description: "",
-            photo: "",
-            photoPreviewUrl: "",
-            video: "",
-            audio: "",
-            address: "",
-            longitude: -73.567244,
-            latitude: 45.498223,
-            heading: "",
-            pitch: "",
-            dateofmemory: "",
-            owner: "",
-            category: "",
-        };
-
-        this.onChange = this.onChange.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
-
-    }
-
     onSubmit(e) {
         e.preventDefault();
-        // TODO: do something with -> this.state.file
-        console.log('handle uploading-', this.state.photo);
+        // TODO: do something with -> this.props.memoryFormVars.file
+        console.log('handle uploading-', this.props.memoryFormVars.photo);
     }
 
     componentDidMount() {
         console.log("mounted")
         this.props.getCategories()
-        console.log(this.props.categories)
+        this.props.getMemoryForm()
+
+
     }
+
 
     onChange(e) {
         e.preventDefault();
@@ -47,26 +37,15 @@ class MemoryForm extends React.Component {
         let name = target.name
         let value = null
 
-        console.log("target")
-        console.log(target)
-
-        console.log("name")
-        console.log(name)
-
-
         if (name === "photo") {
-            console.log("name")
             value = target.files[0]
         }
         else {
             value = target.value
         }
-
         this.setState({ [name]: value })
-
         if (name === "photo") {
             let reader = new FileReader();
-
             reader.onloadend = () => {
                 this.setState({
                     photoPreviewUrl: reader.result
@@ -76,20 +55,24 @@ class MemoryForm extends React.Component {
         }
     }
 
+
+
+
     render() {
 
-        console.log('this.state.photo')
-        console.log(this.state.photo)
+        const {
+            title, description, photo, video, audio,
+            address, longitude, latitude, heading, pitch, zoom,
+            dateofmemory, category
+        } = this.props.memoryFormVars
 
-        const { title, description, photo, video, audio,
-            address, longitude, latitude, heading, pitch,
-            dateofmemory, category } = this.state
+        const coordinates = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
 
-        let { photoPreviewUrl } = this.state;
+        let { photoPreviewUrl } = this.props.memoryFormVars;
         let $photoPreview = null;
 
         if (photoPreviewUrl) {
-            $photoPreview = (<img src={photoPreviewUrl} />);
+            $photoPreview = (<img src={photoPreviewUrl} width="100%" height="100%" />);
         } else {
             $photoPreview = (<div className="previewText">Please select an Image for Preview</div>);
         }
@@ -99,6 +82,15 @@ class MemoryForm extends React.Component {
             <Fragment>
                 <div className="card card-body mt-4 mb-4">
                     <h2>Add Memory</h2>
+                    <div id="infoWindowContent">
+                        <div id="memory">
+                            {$photoPreview}
+                        </div>
+
+                        <MemoryStreetView coordinates={coordinates} />
+
+                    </div >
+
                     <form onSubmit={this.onSubmit}>
                         <div className="form-group">
                             <label>Title</label>
@@ -107,15 +99,12 @@ class MemoryForm extends React.Component {
                                 type="text"
                                 name="title"
                                 onChange={this.onChange}
-                                value={title}
+                                value={this.props.memoryFormVars.title}
                             />
                         </div>
                         <div className="form-group">
                             <label>Image</label>
 
-                            <div className="imgPreview">
-                                {$photoPreview}
-                            </div>
                             <div >
                                 <input
                                     className="form-control"
@@ -135,7 +124,7 @@ class MemoryForm extends React.Component {
                                 type="text"
                                 name="address"
                                 onChange={this.onChange}
-                                value={address}
+                                value={this.props.memoryFormVars.address}
                             />
                         </div>
                         <div className="form-group">
@@ -145,7 +134,7 @@ class MemoryForm extends React.Component {
                                 type="number"
                                 name="longitude"
                                 onChange={this.onChange}
-                                value={longitude}
+                                value={this.props.memoryFormVars.longitude}
                             />
                         </div>
                         <div className="form-group">
@@ -155,7 +144,7 @@ class MemoryForm extends React.Component {
                                 type="number"
                                 name="latitude"
                                 onChange={this.onChange}
-                                value={latitude}
+                                value={this.props.memoryFormVars.latitude}
                             />
                         </div>
                         <div className="form-group">
@@ -165,7 +154,7 @@ class MemoryForm extends React.Component {
                                 type="number"
                                 name="heading"
                                 onChange={this.onChange}
-                                value={heading}
+                                value={this.props.memoryFormVars.heading}
                             />
                         </div>
                         <div className="form-group">
@@ -175,7 +164,7 @@ class MemoryForm extends React.Component {
                                 type="number"
                                 name="pitch"
                                 onChange={this.onChange}
-                                value={pitch}
+                                value={this.props.memoryFormVars.pitch}
                             />
                         </div>
                         <div className="form-group">
@@ -185,7 +174,7 @@ class MemoryForm extends React.Component {
                                 type="date"
                                 name="dateofmemory"
                                 onChange={this.onChange}
-                                value={dateofmemory}
+                                value={this.props.memoryFormVars.dateofmemory}
                             />
                         </div>
                         <div className="form-group">
@@ -195,7 +184,7 @@ class MemoryForm extends React.Component {
                                 type="text"
                                 name="message"
                                 onChange={this.onChange}
-                                value={description}
+                                value={this.props.memoryFormVars.description}
                             />
                         </div>
 
@@ -214,18 +203,21 @@ class MemoryForm extends React.Component {
                         </div>
                     </form>
                 </div>
-            </Fragment>
+            </Fragment >
 
 
 
         )
     }
+
+
 }
-
-
 const mapStateToProps = state => ({
     categories: state.memories.categories,
-    user: state.auth.user
+    user: state.auth.user,
+    memoryFormVars: state.memories.memoryFormVars
 })
 
-export default connect(mapStateToProps, { getCategories, addMemory })(MemoryForm)
+
+
+export default connect(mapStateToProps, { getCategories, addMemory, getMemoryForm })(MemoryForm)
