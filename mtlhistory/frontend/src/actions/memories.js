@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {
-    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM
+    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM
 } from "./types";
 import { TokenConfig } from './auth'
 
@@ -23,7 +23,6 @@ export const getCategories = () => (dispatch, getState) => {
     axios
         .get('api/memorycategories', TokenConfig(getState))
         .then(res => {
-            console.log("fetched something")
             console.log(res)
             dispatch({
                 type: GET_MEMORY_SUBJECT_CATEGORY,
@@ -46,7 +45,7 @@ export const getMemoryForm = () => (dispatch, getState) => {
             title: "",
             description: "",
             photo: "",
-            photoPreviewUrl: "",
+            photoPreviewUrl: null,
             video: "",
             audio: "",
             address: "",
@@ -63,6 +62,16 @@ export const getMemoryForm = () => (dispatch, getState) => {
         }
     })
 }
+
+export const updateMemoryForm = (updated_payload) => dispatch => {
+    console.log("updateMemoryForm firing")
+    dispatch({
+        type: UPDATE_MEMORY_FORM,
+        payload: updated_payload
+    })
+}
+
+
 
 
 export const addMemory = memory => (dispatch, getState) => {

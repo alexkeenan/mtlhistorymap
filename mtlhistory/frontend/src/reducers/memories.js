@@ -1,6 +1,6 @@
 import reducers from 'react-redux'
 import {
-    GET_MEMORIES, ADD_MEMORY, DELETE_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM
+    GET_MEMORIES, ADD_MEMORY, DELETE_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM
 } from "../actions/types";
 
 const initialState = {
@@ -35,6 +35,11 @@ export default function (state = initialState, action) {
             };
 
         case GET_MEMORY_FORM:
+            return {
+                ...state,
+                memoryFormVars: action.payload
+            }
+        case UPDATE_MEMORY_FORM:
             return {
                 ...state,
                 memoryFormVars: action.payload

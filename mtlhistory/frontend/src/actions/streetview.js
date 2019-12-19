@@ -3,6 +3,7 @@ import {
     GET_PANORAMA,
 } from "./types";
 
+import { TokenConfig } from './auth'
 
 export const getPanorama = () => (dispatch) => {
 

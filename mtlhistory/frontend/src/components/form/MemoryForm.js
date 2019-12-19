@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getCategories, addMemory, getMemoryForm } from '../../actions/memories'
+import { getCategories, addMemory, getMemoryForm, updateMemoryForm } from '../../actions/memories'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import MemoryStreetView from './MemoryStreetView'
@@ -21,16 +21,9 @@ class MemoryForm extends React.Component {
         console.log('handle uploading-', this.props.memoryFormVars.photo);
     }
 
-    componentDidMount() {
-        console.log("mounted")
-        this.props.getCategories()
-        this.props.getMemoryForm()
 
 
-    }
-
-
-    onChange(e) {
+    onChange = e => {
         e.preventDefault();
 
         let target = e.target
@@ -39,23 +32,30 @@ class MemoryForm extends React.Component {
 
         if (name === "photo") {
             value = target.files[0]
+            let reader = new FileReader();
+            reader.onloadend = () => {
+
+                let photoPreviewUrl = reader.result
+
+                this.props.updateMemoryForm({
+                    ...this.props.memoryFormVars,
+                    [name]: value,
+                    photoPreviewUrl
+                })
+            }
+            reader.readAsDataURL(value)
+
+
         }
         else {
             value = target.value
+            this.props.updateMemoryForm({
+                ...this.props.memoryFormVars,
+                [name]: value
+            })
         }
-        this.setState({ [name]: value })
-        if (name === "photo") {
-            let reader = new FileReader();
-            reader.onloadend = () => {
-                this.setState({
-                    photoPreviewUrl: reader.result
-                });
-            }
-            reader.readAsDataURL(value)
-        }
+
     }
-
-
 
 
     render() {
@@ -63,16 +63,14 @@ class MemoryForm extends React.Component {
         const {
             title, description, photo, video, audio,
             address, longitude, latitude, heading, pitch, zoom,
-            dateofmemory, category
+            dateofmemory, category, photoPreviewUrl
         } = this.props.memoryFormVars
 
-        const coordinates = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
-
-        let { photoPreviewUrl } = this.props.memoryFormVars;
+        let { photoPreviewUrl2 } = this.props.memoryFormVars;
         let $photoPreview = null;
 
-        if (photoPreviewUrl) {
-            $photoPreview = (<img src={photoPreviewUrl} width="100%" height="100%" />);
+        if (photoPreviewUrl2) {
+            $photoPreview = (<img src={photoPreviewUrl2} width="100%" height="100%" />);
         } else {
             $photoPreview = (<div className="previewText">Please select an Image for Preview</div>);
         }
@@ -87,7 +85,7 @@ class MemoryForm extends React.Component {
                             {$photoPreview}
                         </div>
 
-                        <MemoryStreetView coordinates={coordinates} />
+                        <MemoryStreetView />
 
                     </div >
 
@@ -220,4 +218,11 @@ const mapStateToProps = state => ({
 
 
 
-export default connect(mapStateToProps, { getCategories, addMemory, getMemoryForm })(MemoryForm)
+export default connect(mapStateToProps, { getCategories, addMemory, getMemoryForm, updateMemoryForm })(MemoryForm)
+
+
+
+
+
+
+
