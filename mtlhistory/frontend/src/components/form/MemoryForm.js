@@ -33,8 +33,9 @@ class MemoryForm extends React.Component {
         if (name === "photo") {
             value = target.files[0]
             let reader = new FileReader();
-            reader.onloadend = () => {
 
+            reader.onloadend = () => {
+                console.log("reader load ended")
                 let photoPreviewUrl = reader.result
 
                 this.props.updateMemoryForm({
@@ -44,7 +45,6 @@ class MemoryForm extends React.Component {
                 })
             }
             reader.readAsDataURL(value)
-
 
         }
         else {
@@ -58,6 +58,10 @@ class MemoryForm extends React.Component {
     }
 
 
+
+
+
+
     render() {
 
         const {
@@ -66,7 +70,8 @@ class MemoryForm extends React.Component {
             dateofmemory, category, photoPreviewUrl
         } = this.props.memoryFormVars
 
-        let { photoPreviewUrl2 } = this.props.memoryFormVars;
+        //needed to use photoPreviewUrl2 because if I used photoPreviewUrl I would get an error saying I defined this thing twice
+        let photoPreviewUrl2 = this.props.memoryFormVars.photoPreviewUrl;
         let $photoPreview = null;
 
         if (photoPreviewUrl2) {
