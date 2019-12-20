@@ -8,7 +8,7 @@ import { TokenConfig } from './auth'
 export const getPanorama = () => (dispatch) => {
 
     const script = document.createElement("script");
-    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk";
+    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk&libraries=places";
 
 
     script.async = true;

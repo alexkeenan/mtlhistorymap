@@ -58,6 +58,8 @@ export const getMemoryForm = () => (dispatch, getState) => {
             owner: "",
             category: "",
             counter: 0,
+            map: "",
+            panorama: "",
 
         }
     })

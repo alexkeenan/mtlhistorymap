@@ -30,15 +30,9 @@ export class MemoryStreetView extends Component {
         }
     }
 
+
     componentDidMount() {
         console.log("memory street view mounting")
-        //console.log("this.props.memoryFormVars.counter")
-        //console.log(this.props.memoryFormVars.counter)
-        var oldcounter = this.props.memoryFormVars.counter
-        this.props.updateMemoryForm({
-            ...this.props.memoryFormVars,
-            counter: oldcounter + 1
-        })
 
         const coordinates = { lat: parseFloat(this.props.memoryFormVars.latitude), lng: parseFloat(this.props.memoryFormVars.longitude) };
 
@@ -62,6 +56,14 @@ export class MemoryStreetView extends Component {
 
                 //position_changed: console.log("changed position")
             });
+
+        var oldcounter = this.props.memoryFormVars.counter
+        this.props.updateMemoryForm({
+            ...this.props.memoryFormVars,
+            counter: oldcounter + 1,
+            map,
+            panorama
+        })
 
         map.setStreetView(panorama);
 

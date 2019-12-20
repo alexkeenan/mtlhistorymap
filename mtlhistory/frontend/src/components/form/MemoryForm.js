@@ -59,10 +59,53 @@ class MemoryForm extends React.Component {
 
 
 
+    componentDidUpdate() {
+
+        ///DON'T WANT THIS UPDATING ALL THE TIME I SUPPOSE
+
+        console.log("memoryform componentdidupdate")
+
+        var searchBox = new google.maps.places.SearchBox(document.getElementById('address'));
+
+        console.log("searchbox defined")
+        console.log("this.props.memoryFormVars")
+        console.log(this.props.memoryFormVars)
+
+        var map = this.props.memoryFormVars.map
+        var pano = this.props.memoryFormVars.panorama
+        //at least here it know what map is 
+
+        google.maps.event.addListener(searchBox, 'places_changed', () => {
+
+            var place = searchBox.getPlaces()[0]
+
+            console.log("FROM WITHIN THE LISTENER")
+
+            if (!place.geometry) return;
+
+            console.log("place.geometry.location")
+            console.log(place.geometry.location)
+            map.setCenter(place.geometry.location);
+            pano.setPosition(place.geometry.location);
+            map.setZoom(14);
+
+        });
+
+    }
+
+
+
+    componentDidMount() {
+        console.log("memoryform mounting")
+
+
+
+    }
 
 
 
     render() {
+
 
         const {
             title, description, photo, video, audio,
@@ -79,6 +122,7 @@ class MemoryForm extends React.Component {
         } else {
             $photoPreview = (<div className="previewText">Please select an Image for Preview</div>);
         }
+
 
         return (
 
@@ -123,6 +167,7 @@ class MemoryForm extends React.Component {
                             <label>Address</label>
                             <input
                                 className="form-control"
+                                id="address"
                                 type="text"
                                 name="address"
                                 onChange={this.onChange}
@@ -217,7 +262,8 @@ class MemoryForm extends React.Component {
 const mapStateToProps = state => ({
     categories: state.memories.categories,
     user: state.auth.user,
-    memoryFormVars: state.memories.memoryFormVars
+    memoryFormVars: state.memories.memoryFormVars,
+    memories: state.memories
 })
 
 
