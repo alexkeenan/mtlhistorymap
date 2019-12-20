@@ -86,11 +86,10 @@ class MemoryForm extends React.Component {
                 <div className="card card-body mt-4 mb-4">
                     <h2>Add Memory</h2>
                     <div id="infoWindowContent">
+                        <MemoryStreetView />
                         <div id="memory">
                             {$photoPreview}
                         </div>
-
-                        <MemoryStreetView />
 
                     </div >
 

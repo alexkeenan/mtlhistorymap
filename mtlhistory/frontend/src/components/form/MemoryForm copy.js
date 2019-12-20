@@ -1,231 +1,205 @@
 import React, { Component, Fragment } from 'react'
-import { getCategories, addMemory, getMemoryForm, updateMemoryForm } from '../../actions/memories'
+import { getMemoryForm, updateMemoryForm } from '../../actions/memories'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import MemoryStreetView from './MemoryStreetView'
-
-/*
-
-glitchy mess, infinite loops, sometimes functions are recgonized, sometimes they're not
-
-review component did update, and check code from leadmanager as well. 
-https://reactjs.org/docs/react-component.html
-
-*/
 
 
-class MemoryForm extends React.Component {
-    onSubmit(e) {
-        e.preventDefault();
-        // TODO: do something with -> this.props.memoryFormVars.file
-        console.log('handle uploading-', this.props.memoryFormVars.photo);
+export class MemoryStreetView extends Component {
+    constructor(props) {
+        super(props)
+        this.panDiv = React.createRef();
+        this.mapDiv = React.createRef();
+        this.mapChange = this.mapChange.bind(this);
+
+    }
+
+    //I never want google maps to rerender
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.memoryFormVars.counter == 0) {
+            //console.log("counter ==0")
+            //console.log("this.props.memoryFormVars.counter")
+            //console.log(this.props.memoryFormVars.counter)
+            return true
+        }
+        else {
+            //console.log("counter !=0")
+            //console.log("this.props.memoryFormVars.counter")
+            //console.log(this.props.memoryFormVars.counter)
+            return false;
+        }
     }
 
     componentDidMount() {
-        console.log("mounted")
-        this.props.getCategories()
-        this.props.getMemoryForm()
-
+        console.log("memory street view mounting")
+        //console.log("this.props.memoryFormVars.counter")
+        //console.log(this.props.memoryFormVars.counter)
+        var oldcounter = this.props.memoryFormVars.counter
+        this.props.updateMemoryForm({
+            ...this.props.memoryFormVars,
+            counter: oldcounter + 1
+        })
     }
 
-
-    onChange(e) {
-        e.preventDefault();
-
-        let target = e.target
-        let name = target.name
-        let value = null
-
-        if (name === "photo") {
-            value = target.files[0]
-        }
-        else {
-            value = target.value
-        }
+    mapChange = panorama => {
+        var lat = panorama.getPosition().lat()
+        var lng = panorama.getPosition().lng()
+        var heading = panorama.getPov().heading
+        var pitch = panorama.getPov().pitch
+        var zoom = panorama.getPov().zoom
 
 
-        this.setState({ [name]: value })
-        if (name === "photo") {
-            let reader = new FileReader();
-            reader.onloadend = () => {
-                this.setState({
-                    photoPreviewUrl: reader.result
-                });
-            }
-            reader.readAsDataURL(value)
-        }
+
+        console.log("before state change")
+        console.log(this.props.memoryFormVars)
+
+
+        this.props.updateMemoryForm({
+            ...this.props.memoryFormVars,
+            latitude: lat,
+            longitude: lng,
+            heading: heading,
+            pitch: pitch,
+            zoom: zoom
+        })
+
     }
-
-
 
 
     render() {
 
-        const {
-            title, description, photo, video, audio,
-            address, longitude, latitude, heading, pitch, zoom,
-            dateofmemory, category
-        } = this.props.memoryFormVars
+        const coordinates = { lat: parseFloat(this.props.memoryFormVars.latitude), lng: parseFloat(this.props.memoryFormVars.longitude) };
 
-        const coordinates = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
+        const latling = new google.maps.LatLng(parseFloat(this.props.memoryFormVars.latitude), parseFloat(this.props.memoryFormVars.longitude))
 
-        let { photoPreviewUrl } = this.props.memoryFormVars;
-        let $photoPreview = null;
+        console.log("coordinates")
+        console.log(coordinates)
+        console.log("latling")
+        console.log(latling)
 
-        if (photoPreviewUrl) {
-            $photoPreview = (<img src={photoPreviewUrl} width="100%" height="100%" />);
-        } else {
-            $photoPreview = (<div className="previewText">Please select an Image for Preview</div>);
-        }
+        const map = new google.maps.Map(this.mapDiv.current, {
+            center: latling,
+            zoom: 14
+        });
+
+        const panorama = new window.google.maps.StreetViewPanorama(
+            this.panDiv.current,
+            //document.getElementById('pano'), 
+            {
+                position: coordinates,
+
+                pov: {
+                    heading: this.props.memoryFormVars.heading,
+                    pitch: this.props.memoryFormVars.pitch,
+                    zoom: this.props.memoryFormVars.zoom
+                },
+
+                //position_changed: console.log("changed position")
+            });
+
+
+        panorama.addListener('position_changed', () => {
+
+            console.log("pos listener firing")
+
+            var lat = panorama.getPosition().lat()
+            var lng = panorama.getPosition().lng()
+            var heading = panorama.getPov().heading
+            var pitch = panorama.getPov().pitch
+            var zoom = panorama.getPov().zoom
+
+            if (lat !== this.props.memoryFormVars.latitude ||
+                lng !== this.props.memoryFormVars.longitude ||
+                heading !== this.props.memoryFormVars.heading ||
+                pitch !== this.props.memoryFormVars.pitch
+                //|| zoom !== this.props.memoryFormVars.zoom
+
+            ) {
+
+
+                console.log("detected a real POS change")
+                console.log("lat : " + lat + " state.lat " + this.props.memoryFormVars.latitude)
+                console.log("lng : " + lng + " state.longitude " + this.props.memoryFormVars.longitude)
+                console.log("heading : " + heading + " state.heading " + this.props.memoryFormVars.heading)
+                console.log("pitch : " + pitch + " state.pitch " + this.props.memoryFormVars.pitch)
+                console.log("zoom : " + zoom + " state.zoom " + this.props.memoryFormVars.zoom)
+
+
+                console.log("counter :" + this.props.memoryFormVars.counter)
+                if (this.props.memoryFormVars.counter < 5) {
+                    this.mapChange(panorama)
+                    console.log("state after")
+                    console.log(this.props.memoryFormVars)
+                }
+                else {
+                    console.log("prevented infinite loop")
+                }
+
+
+            }
+            else {
+                console.log("PREVENTED unnecessary change")
+            }
+
+        });
+
+        panorama.addListener('pov_changed', () => {
+            console.log("POV listener firing")
+
+            var lat = panorama.getPosition().lat()
+            var lng = panorama.getPosition().lng()
+            var heading = panorama.getPov().heading
+            var pitch = panorama.getPov().pitch
+            var zoom = panorama.getPov().zoom
+
+            if (lat !== this.props.memoryFormVars.latitude ||
+                lng !== this.props.memoryFormVars.longitude ||
+                heading !== this.props.memoryFormVars.heading ||
+                pitch !== this.props.memoryFormVars.pitch
+                //||zoom !== this.props.memoryFormVars.zoom
+            ) {
+
+
+                console.log("detected a real POV change")
+                console.log("lat : " + lat + " state.lat " + this.props.memoryFormVars.latitude)
+                console.log("lng : " + lng + " state.longitude " + this.props.memoryFormVars.longitude)
+                console.log("heading : " + heading + " state.heading " + this.props.memoryFormVars.heading)
+                console.log("pitch : " + pitch + " state.pitch " + this.props.memoryFormVars.pitch)
+                console.log("zoom : " + zoom + " state.zoom " + this.props.memoryFormVars.zoom)
+
+
+                console.log("counter :" + this.props.memoryFormVars.counter)
+                if (this.props.memoryFormVars.counter < 5) {
+                    this.mapChange(panorama)
+
+                    console.log("state after")
+                    console.log(this.props.memoryFormVars)
+
+                }
+                else {
+                    console.log("prevented infinite loop")
+                }
+            }
+            else {
+                console.log("PREVENTED unnecessary change")
+            }
+        });
+
 
         return (
-
             <Fragment>
-                <div className="card card-body mt-4 mb-4">
-                    <h2>Add Memory</h2>
-                    <div id="infoWindowContent">
-                        <div id="memory">
-                            {$photoPreview}
-                        </div>
-
-                        <MemoryStreetView />
-
-                    </div >
-
-                    <form onSubmit={this.onSubmit}>
-                        <div className="form-group">
-                            <label>Title</label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                name="title"
-                                onChange={this.onChange}
-                                value={this.props.memoryFormVars.title}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Image</label>
-
-                            <div >
-                                <input
-                                    className="form-control"
-                                    type="file"
-                                    name="photo"
-                                    accept="image/*"
-                                    onChange={this.onChange}
-                                />
-
-                            </div>
-
-                        </div>
-                        <div className="form-group">
-                            <label>Address</label>
-                            <input
-                                className="form-control"
-                                type="text"
-                                name="address"
-                                onChange={this.onChange}
-                                value={this.props.memoryFormVars.address}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Longitude </label>
-                            <input
-                                className="form-control"
-                                type="number"
-                                name="longitude"
-                                onChange={this.onChange}
-                                value={this.props.memoryFormVars.longitude}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Latitude</label>
-                            <input
-                                className="form-control"
-                                type="number"
-                                name="latitude"
-                                onChange={this.onChange}
-                                value={this.props.memoryFormVars.latitude}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Heading</label>
-                            <input
-                                className="form-control"
-                                type="number"
-                                name="heading"
-                                onChange={this.onChange}
-                                value={this.props.memoryFormVars.heading}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Pitch</label>
-                            <input
-                                className="form-control"
-                                type="number"
-                                name="pitch"
-                                onChange={this.onChange}
-                                value={this.props.memoryFormVars.pitch}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Date of Memory</label>
-                            <input
-                                className="form-control"
-                                type="date"
-                                name="dateofmemory"
-                                onChange={this.onChange}
-                                value={this.props.memoryFormVars.dateofmemory}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Description</label>
-                            <textarea
-                                className="form-control"
-                                type="text"
-                                name="message"
-                                onChange={this.onChange}
-                                value={this.props.memoryFormVars.description}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            {this.props.categories.map(category => {
-                                <option name="categories" value={category}>{category}</option>
-                            })}
-                        </div>
-
-
-
-                        <div className="form-group">
-                            <button type="submit" className="btn btn-primary">
-                                Submit
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </Fragment >
-
-
+                <div id="pano" ref={this.panDiv}></div>
+                <div id="map" ref={this.mapDiv}></div>
+            </Fragment>
 
         )
     }
-
-
 }
+
 const mapStateToProps = state => ({
-    categories: state.memories.categories,
-    user: state.auth.user,
     memoryFormVars: state.memories.memoryFormVars
 })
 
 
-
-export default connect(mapStateToProps, { getCategories, addMemory, getMemoryForm, updateMemoryForm })(MemoryForm)
-
-
-
-
-
-
+export default connect(mapStateToProps, { getMemoryForm, updateMemoryForm })(MemoryStreetView)
 

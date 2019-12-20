@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { getMemoryForm, updateMemoryForm } from '../../actions/memories'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -8,6 +8,7 @@ export class MemoryStreetView extends Component {
     constructor(props) {
         super(props)
         this.panDiv = React.createRef();
+        this.mapDiv = React.createRef();
         this.mapChange = this.mapChange.bind(this);
 
     }
@@ -38,42 +39,18 @@ export class MemoryStreetView extends Component {
             ...this.props.memoryFormVars,
             counter: oldcounter + 1
         })
-    }
-
-    mapChange = panorama => {
-        var lat = panorama.getPosition().lat()
-        var lng = panorama.getPosition().lng()
-        var heading = panorama.getPov().heading
-        var pitch = panorama.getPov().pitch
-        var zoom = panorama.getPov().zoom
-
-
-
-        console.log("before state change")
-        console.log(this.props.memoryFormVars)
-
-
-        this.props.updateMemoryForm({
-            ...this.props.memoryFormVars,
-            latitude: lat,
-            longitude: lng,
-            heading: heading,
-            pitch: pitch,
-            zoom: zoom
-        })
-
-    }
-
-
-
-
-    render() {
 
         const coordinates = { lat: parseFloat(this.props.memoryFormVars.latitude), lng: parseFloat(this.props.memoryFormVars.longitude) };
 
+        var map = new google.maps.Map(
+            this.mapDiv.current, {
+            center: coordinates,
+            zoom: 14
+        });
+
         const panorama = new window.google.maps.StreetViewPanorama(
             this.panDiv.current,
-            //document.getElementById('pano'), 
+
             {
                 position: coordinates,
 
@@ -86,6 +63,7 @@ export class MemoryStreetView extends Component {
                 //position_changed: console.log("changed position")
             });
 
+        map.setStreetView(panorama);
 
         panorama.addListener('position_changed', () => {
 
@@ -175,13 +153,52 @@ export class MemoryStreetView extends Component {
         });
 
 
-        return (
+    }
 
-            <div id="pano" ref={this.panDiv}></div>
+    mapChange = panorama => {
+        var lat = panorama.getPosition().lat()
+        var lng = panorama.getPosition().lng()
+        var heading = panorama.getPov().heading
+        var pitch = panorama.getPov().pitch
+        var zoom = panorama.getPov().zoom
+
+
+
+        console.log("before state change")
+        console.log(this.props.memoryFormVars)
+
+
+        this.props.updateMemoryForm({
+            ...this.props.memoryFormVars,
+            latitude: lat,
+            longitude: lng,
+            heading: heading,
+            pitch: pitch,
+            zoom: zoom
+        })
+
+
+
+
+    }
+
+
+    render() {
+
+
+
+        return (
+            <Fragment>
+                <div id="map" ref={this.mapDiv}></div>
+                <div id="pano" ref={this.panDiv}></div>
+
+
+            </Fragment>
 
         )
     }
 }
+
 
 const mapStateToProps = state => ({
     memoryFormVars: state.memories.memoryFormVars
@@ -189,4 +206,9 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps, { getMemoryForm, updateMemoryForm })(MemoryStreetView)
+
+//the google api wrapper will mess up my normal panorama from showing. Why? who knows 
+//<div id="pano" ref={this.panDiv}></div>
+
+//export default connect(mapStateToProps, { getMemoryForm, updateMemoryForm })((GoogleApiWrapper({ apiKey: 'AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk' }))(MemoryStreetView))
 
