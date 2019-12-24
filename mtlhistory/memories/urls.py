@@ -17,8 +17,6 @@ router.register('api/memory', MemoryViewSet, 'memories')
 """
 FOR SOME REASON, THE URL BELOW WILL NEVER BE FOUND. YOU MUST GET RID OF THE  '/' FOR IT TO WORK. 
 
-
-
 # view or create memory categories
 router.register('api/memory/categories', MemoryCategoriesViewSet, 'memory_categories')
 

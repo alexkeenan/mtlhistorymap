@@ -22,7 +22,7 @@ def get_geocode(address):
 
 
 class MemoryCategory(models.Model):
-    category = models.CharField(max_length=50,null=True)
+    category = models.CharField(max_length=50,null=True,unique=True)
 
     def __str__(self):
         return self.category
@@ -31,14 +31,15 @@ class MemoryCategory(models.Model):
 class Memory(models.Model):
     title = models.CharField(max_length=50,null=True)
     description = models.TextField(blank=True,default='',null=True)
-    photo = models.ImageField(null=True,blank=True)
-    video= models.FileField(upload_to='videos/', null=True, blank=True,verbose_name="Video")
-    audio=models.FileField(upload_to='audio/', null=True, blank=True,verbose_name="Audio")
+    photo = models.FileField(upload_to='images/',null=True,blank=True,default=None,verbose_name="Image")
+    video= models.FileField(upload_to='videos/', null=True, blank=True,default=None,verbose_name="Video")
+    audio=models.FileField(upload_to='audio/', null=True, blank=True,default=None,verbose_name="Audio")
     address= models.CharField(max_length=50,null=True,default="")
-    longitude=models.DecimalField(max_digits=9, decimal_places=6,null=True,blank=True,default=None)
-    latitude=models.DecimalField(max_digits=9, decimal_places=6,null=True,blank=True,default=None)
-    heading=models.IntegerField(null=True,blank=True)
-    pitch=models.IntegerField(null=True,blank=True)
+    longitude=models.FloatField(null=True,blank=True,default=None)
+    latitude=models.FloatField(null=True,blank=True,default=None)
+    heading=models.FloatField(null=True,blank=True,default=None)
+    pitch=models.FloatField(null=True,blank=True)
+    zoom=models.FloatField(null=True,blank=True,default=None)
     dateofmemory= models.DateField()
     owner=models.ForeignKey(User,related_name="memories",null=True,on_delete=models.SET_NULL)
     category = models.ManyToManyField(MemoryCategory,null=True,blank=True)

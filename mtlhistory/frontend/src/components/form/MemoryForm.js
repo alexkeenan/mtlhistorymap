@@ -11,24 +11,47 @@ glitchy mess, infinite loops, sometimes functions are recgonized, sometimes they
 review component did update, and check code from leadmanager as well. 
 https://reactjs.org/docs/react-component.html
 
+uploading images
+https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
+
+you might have to setup another serializer just for the media stuff 
+https://www.techiediaries.com/django-rest-image-file-upload-tutorial/
+
+
+
 */
 
 
 class MemoryForm extends React.Component {
-    onSubmit(e) {
+
+
+    onSubmit = e => {
         e.preventDefault();
-        // TODO: do something with -> this.props.memoryFormVars.file
-        console.log('handle uploading-', this.props.memoryFormVars.photo);
+
+        const { title, description, photo, video, audio, address, longitude, latitude, heading, pitch, dateofmemory, owner, category } = this.props.memoryFormVars
+
+
+        var memory = { title, description, address, longitude, latitude, heading, pitch, dateofmemory, owner, category }
+
+
+        //only add if user added it
+
+        photo !== null ? memory = { ...memory, photo } : null
+        video !== null ? memory = { ...memory, video } : null
+        audio !== null ? memory = { ...memory, audio } : null
+
+        console.log("memory AFTER")
+        console.log(memory)
+
+        this.props.addMemory(memory)
+
     }
-
-
-
     onChange = e => {
         e.preventDefault();
-
         let target = e.target
         let name = target.name
         let value = null
+
 
         if (name === "photo") {
             value = target.files[0]
@@ -47,8 +70,18 @@ class MemoryForm extends React.Component {
             reader.readAsDataURL(value)
 
         }
+
         else {
-            value = target.value
+
+            if (name === "category") {
+                //the model is looking for the id key of the category, not the string name. 
+                //so I'm concatinating the ids of the options
+                value = [...target.options].filter(o => o.selected).map(o => o.id)
+            }
+            else {
+                value = target.value
+            }
+
             this.props.updateMemoryForm({
                 ...this.props.memoryFormVars,
                 [name]: value
@@ -96,6 +129,7 @@ class MemoryForm extends React.Component {
 
 
     componentDidMount() {
+        this.props.getCategories()
         console.log("memoryform mounting")
 
 
@@ -215,6 +249,16 @@ class MemoryForm extends React.Component {
                             />
                         </div>
                         <div className="form-group">
+                            <label>Zoom</label>
+                            <input
+                                className="form-control"
+                                type="number"
+                                name="pitch"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.zoom}
+                            />
+                        </div>
+                        <div className="form-group">
                             <label>Date of Memory</label>
                             <input
                                 className="form-control"
@@ -229,19 +273,24 @@ class MemoryForm extends React.Component {
                             <textarea
                                 className="form-control"
                                 type="text"
-                                name="message"
+                                name="description"
                                 onChange={this.onChange}
                                 value={this.props.memoryFormVars.description}
                             />
                         </div>
 
                         <div className="form-group">
-                            {this.props.categories.map(category => {
-                                <option name="categories" value={category}>{category}</option>
-                            })}
+                            <label>Memory Category</label>
+                            <select multiple name="categories" className="form-control"
+                                type="text"
+                                name="category"
+                                onChange={this.onChange}>
+                                {this.props.categories.map(each_category => (
+
+                                    < option name="categories" id={each_category.id} value={each_category.category} > {each_category.category}</option>
+                                ))}
+                            </select>
                         </div>
-
-
 
                         <div className="form-group">
                             <button type="submit" className="btn btn-primary">

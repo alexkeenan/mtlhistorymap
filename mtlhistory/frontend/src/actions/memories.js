@@ -7,7 +7,7 @@ import { TokenConfig } from './auth'
 
 export const getMemories = () => (dispatch, getState) => {
     axios
-        .get('api/memories', TokenConfig(getState))
+        .get('api/memories/', TokenConfig(getState))
         .then(res => {
             dispatch({
                 type: GET_MEMORIES,
@@ -21,7 +21,7 @@ export const getMemories = () => (dispatch, getState) => {
 export const getCategories = () => (dispatch, getState) => {
     console.log('getting categories')
     axios
-        .get('api/memorycategories', TokenConfig(getState))
+        .get('api/memorycategories/', TokenConfig(getState))
         .then(res => {
             console.log(res)
             dispatch({
@@ -44,10 +44,10 @@ export const getMemoryForm = () => (dispatch, getState) => {
 
             title: "",
             description: "",
-            photo: "",
+            photo: null,
             photoPreviewUrl: null,
-            video: "",
-            audio: "",
+            video: null,
+            audio: null,
             address: "",
             longitude: -73.5673331320225,
             latitude: 45.4982432855558,
@@ -74,22 +74,6 @@ export const updateMemoryForm = (updated_payload) => dispatch => {
 }
 
 
-
-
-export const addMemory = memory => (dispatch, getState) => {
-
-    //memory will already be an object containing everything I need
-    axios
-        .post('api/memory', memory, TokenConfig(getState))
-        .then(res => {
-            dispatch({
-                type: ADD_MEMORY,
-                payload: res.data
-            })
-        })
-        .catch(err => console.log(err.response.data))
-}
-
 //DELETE MEMORY
 export const deleteMemory = id => (dispatch, getState) => {
 
@@ -108,5 +92,40 @@ export const deleteMemory = id => (dispatch, getState) => {
 
 
 
+///https://github.com/github/fetch/issues/505
 
+
+export const addMemory = memory => (dispatch, getState) => {
+    //memory will already be an object containing everything I need
+    console.log("from within addMemory")
+    console.log(memory)
+    const token = getState().auth.token
+
+    let formData = new FormData();
+
+    for (var key in memory) {
+        console.log(key)
+        console.log(memory[key])
+        formData.append(key, memory[key]);
+    }
+
+    // console log shows it as empty, no idea if it's supposed to look like that. but I'm guessing no
+    console.log("formData")
+    console.log(formData)
+
+
+    fetch("http://localhost:8000/api/memory/", {
+        method: "POST",
+        headers: {
+            'Authorization': `Token ${token}`
+        },
+        body: formData
+    }).then(res => {
+        dispatch({
+            type: ADD_MEMORY,
+            payload: res.data
+        })
+    })
+        .catch(err => console.log(err.response.data))
+}
 
