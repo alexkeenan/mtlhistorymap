@@ -28,10 +28,10 @@ class MemoryForm extends React.Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const { title, description, photo, video, audio, address, longitude, latitude, heading, pitch, dateofmemory, owner, category } = this.props.memoryFormVars
+        const { title, description, photo, video, audio, current_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category } = this.props.memoryFormVars
 
 
-        var memory = { title, description, address, longitude, latitude, heading, pitch, dateofmemory, owner, category }
+        var memory = { title, description, current_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category }
 
 
         //only add if user added it
@@ -98,7 +98,7 @@ class MemoryForm extends React.Component {
 
         console.log("memoryform componentdidupdate")
 
-        var searchBox = new google.maps.places.SearchBox(document.getElementById('address'));
+        var searchBox = new google.maps.places.SearchBox(document.getElementById('current_address'));
 
         console.log("searchbox defined")
         console.log("this.props.memoryFormVars")
@@ -141,12 +141,6 @@ class MemoryForm extends React.Component {
     render() {
 
 
-        const {
-            title, description, photo, video, audio,
-            address, longitude, latitude, heading, pitch, zoom,
-            dateofmemory, category, photoPreviewUrl
-        } = this.props.memoryFormVars
-
         //needed to use photoPreviewUrl2 because if I used photoPreviewUrl I would get an error saying I defined this thing twice
         let photoPreviewUrl2 = this.props.memoryFormVars.photoPreviewUrl;
         let $photoPreview = null;
@@ -163,9 +157,9 @@ class MemoryForm extends React.Component {
             <Fragment>
                 <div className="card card-body mt-4 mb-4">
                     <h2>Add Memory</h2>
-                    <div id="infoWindowContent">
+                    <div id="infoWindowContent_input">
                         <MemoryStreetView />
-                        <div id="memory">
+                        <div id="memory_input">
                             {$photoPreview}
                         </div>
 
@@ -198,14 +192,25 @@ class MemoryForm extends React.Component {
 
                         </div>
                         <div className="form-group">
-                            <label>Address</label>
+                            <label>Current Address (will affect google map)</label>
                             <input
                                 className="form-control"
-                                id="address"
+                                id="current_address"
                                 type="text"
-                                name="address"
+                                name="current_address"
                                 onChange={this.onChange}
-                                value={this.props.memoryFormVars.address}
+                                value={this.props.memoryFormVars.current_address}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Old Address (address at the time of memory)</label>
+                            <input
+                                className="form-control"
+                                id="old_address"
+                                type="text"
+                                name="old_address"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.old_address}
                             />
                         </div>
                         <div className="form-group">

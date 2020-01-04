@@ -34,7 +34,8 @@ class Memory(models.Model):
     photo = models.FileField(upload_to='images/',null=True,blank=True,default=None,verbose_name="Image")
     video= models.FileField(upload_to='videos/', null=True, blank=True,default=None,verbose_name="Video")
     audio=models.FileField(upload_to='audio/', null=True, blank=True,default=None,verbose_name="Audio")
-    address= models.CharField(max_length=50,null=True,default="")
+    current_address= models.CharField(max_length=50,null=True,default="")
+    old_address= models.CharField(max_length=50,null=True,default="")
     longitude=models.FloatField(null=True,blank=True,default=None)
     latitude=models.FloatField(null=True,blank=True,default=None)
     heading=models.FloatField(null=True,blank=True,default=None)
@@ -49,8 +50,8 @@ class Memory(models.Model):
         return self.title
 
     def save(self,*args,**kwargs):
-        if self.longitude==None and self.address!=None:
-            coordinates=get_geocode(self.address)
+        if self.longitude==None and self.current_address!=None:
+            coordinates=get_geocode(self.current_address)
             self.latitude=coordinates["lat"]
             self.longitude=coordinates["lng"]
         super().save(*args,**kwargs)

@@ -191,8 +191,8 @@ export class MemoryStreetView extends Component {
 
         return (
             <Fragment>
-                <div id="map" ref={this.mapDiv}></div>
-                <div id="pano" ref={this.panDiv}></div>
+                <div id="map_input" ref={this.mapDiv}></div>
+                <div id="pano_input" ref={this.panDiv}></div>
 
 
             </Fragment>
