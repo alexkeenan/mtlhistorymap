@@ -2,6 +2,9 @@ import axios from 'axios'
 import {
     GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM
 } from "./types";
+
+import { createMessage, returnErrors } from "./messages"
+
 import { TokenConfig } from './auth'
 
 
@@ -48,7 +51,7 @@ export const getMemoryForm = () => (dispatch, getState) => {
             photoPreviewUrl: null,
             video: null,
             audio: null,
-            current_address: "",
+            camera_address: "",
             old_address: "",
             longitude: -73.5673331320225,
             latitude: 45.4982432855558,
@@ -83,12 +86,15 @@ export const deleteMemory = id => (dispatch, getState) => {
     axios
         .delete(`api/memory/${id}`, TokenConfig(getState))
         .then(res => {
+            dispatch(createMessage({ deleteMemory: "Memory Deleted!" }))
             dispatch({
                 type: DELETE_MEMORY,
                 payload: id
             })
         })
-        .catch(err => console.log(err.response.data))
+        .catch(err =>
+            dispatch(returnErrors(err.response.data, err.response.status))
+        )
 }
 
 
@@ -122,11 +128,16 @@ export const addMemory = memory => (dispatch, getState) => {
         },
         body: formData
     }).then(res => {
+
         dispatch({
             type: ADD_MEMORY,
             payload: res.data
         })
+        dispatch(createMessage({ addMemory: "Memory Created!" }))
     })
-        .catch(err => console.log(err.response.data))
+        .catch(err =>
+            dispatch(returnErrors(err.response.data, err.response.status))
+        )
+
 }
 

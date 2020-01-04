@@ -28,10 +28,10 @@ class MemoryForm extends React.Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const { title, description, photo, video, audio, current_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category } = this.props.memoryFormVars
 
 
-        var memory = { title, description, current_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category }
+        const { title, description, photo, video, audio, camera_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category } = this.props.memoryFormVars
+        var memory = { title, description, camera_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category }
 
 
         //only add if user added it
@@ -40,10 +40,22 @@ class MemoryForm extends React.Component {
         video !== null ? memory = { ...memory, video } : null
         audio !== null ? memory = { ...memory, audio } : null
 
-        console.log("memory AFTER")
+        console.log("memory SUBMITTED")
         console.log(memory)
 
         this.props.addMemory(memory)
+
+        /**/
+        var resettedMemoryForm = {}
+        Object.keys(this.props.memoryFormVars).map(key => {
+            resettedMemoryForm[key] = ""
+        })
+
+        console.log(resettedMemoryForm)
+        this.props.updateMemoryForm({
+            ...resettedMemoryForm
+
+        })
 
     }
     onChange = e => {
@@ -74,9 +86,11 @@ class MemoryForm extends React.Component {
         else {
 
             if (name === "category") {
+                console.log("DETECTED CHANGE IN CATEGORY")
                 //the model is looking for the id key of the category, not the string name. 
                 //so I'm concatinating the ids of the options
                 value = [...target.options].filter(o => o.selected).map(o => o.id)
+                //value = [...target.options].filter(o => o.selected)
             }
             else {
                 value = target.value
@@ -98,7 +112,7 @@ class MemoryForm extends React.Component {
 
         console.log("memoryform componentdidupdate")
 
-        var searchBox = new google.maps.places.SearchBox(document.getElementById('current_address'));
+        var searchBox = new google.maps.places.SearchBox(document.getElementById('camera_address'));
 
         console.log("searchbox defined")
         console.log("this.props.memoryFormVars")
@@ -192,18 +206,18 @@ class MemoryForm extends React.Component {
 
                         </div>
                         <div className="form-group">
-                            <label>Current Address (will affect google map)</label>
+                            <label>"Camera" Address (Address according to google maps)</label>
                             <input
                                 className="form-control"
-                                id="current_address"
+                                id="camera_address"
                                 type="text"
-                                name="current_address"
+                                name="camera_address"
                                 onChange={this.onChange}
-                                value={this.props.memoryFormVars.current_address}
+                                value={this.props.memoryFormVars.camera_address}
                             />
                         </div>
                         <div className="form-group">
-                            <label>Old Address (address at the time of memory)</label>
+                            <label>Address of memory (Address at the time)</label>
                             <input
                                 className="form-control"
                                 id="old_address"
@@ -286,12 +300,11 @@ class MemoryForm extends React.Component {
 
                         <div className="form-group">
                             <label>Memory Category</label>
-                            <select multiple name="categories" className="form-control"
+                            <select multiple required name="categories" className="form-control"
                                 type="text"
                                 name="category"
                                 onChange={this.onChange}>
                                 {this.props.categories.map(each_category => (
-
                                     < option name="categories" id={each_category.id} value={each_category.category} > {each_category.category}</option>
                                 ))}
                             </select>

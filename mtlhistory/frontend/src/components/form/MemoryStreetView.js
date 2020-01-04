@@ -85,7 +85,6 @@ export class MemoryStreetView extends Component {
 
             ) {
 
-
                 console.log("detected a real POS change")
                 console.log("lat : " + lat + " state.lat " + this.props.memoryFormVars.latitude)
                 console.log("lng : " + lng + " state.longitude " + this.props.memoryFormVars.longitude)
@@ -103,7 +102,6 @@ export class MemoryStreetView extends Component {
                 else {
                     console.log("prevented infinite loop")
                 }
-
 
             }
             else {

@@ -22,7 +22,7 @@ def get_geocode(address):
 
 
 class MemoryCategory(models.Model):
-    category = models.CharField(max_length=50,null=True,unique=True)
+    category = models.CharField(max_length=50,default="building",unique=True)
 
     def __str__(self):
         return self.category
@@ -34,7 +34,7 @@ class Memory(models.Model):
     photo = models.FileField(upload_to='images/',null=True,blank=True,default=None,verbose_name="Image")
     video= models.FileField(upload_to='videos/', null=True, blank=True,default=None,verbose_name="Video")
     audio=models.FileField(upload_to='audio/', null=True, blank=True,default=None,verbose_name="Audio")
-    current_address= models.CharField(max_length=50,null=True,default="")
+    camera_address= models.CharField(max_length=50,null=True,default="")
     old_address= models.CharField(max_length=50,null=True,default="")
     longitude=models.FloatField(null=True,blank=True,default=None)
     latitude=models.FloatField(null=True,blank=True,default=None)
@@ -50,8 +50,8 @@ class Memory(models.Model):
         return self.title
 
     def save(self,*args,**kwargs):
-        if self.longitude==None and self.current_address!=None:
-            coordinates=get_geocode(self.current_address)
+        if self.longitude==None and self.camera_address!=None:
+            coordinates=get_geocode(self.camera_address)
             self.latitude=coordinates["lat"]
             self.longitude=coordinates["lng"]
         super().save(*args,**kwargs)
