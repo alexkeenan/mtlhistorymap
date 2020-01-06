@@ -3,6 +3,7 @@ import { getCategories, addMemory, getMemoryForm, updateMemoryForm } from '../..
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import MemoryStreetView from './MemoryStreetView'
+import { Redirect } from 'react-router-dom'
 
 /*
 
@@ -29,6 +30,10 @@ class MemoryForm extends React.Component {
         e.preventDefault();
 
 
+        this.props.updateMemoryForm({
+
+            ["camera_address"]: document.getElementById('camera_address').value
+        })
 
         const { title, description, photo, video, audio, camera_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category } = this.props.memoryFormVars
         var memory = { title, description, camera_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category }
@@ -45,17 +50,35 @@ class MemoryForm extends React.Component {
 
         this.props.addMemory(memory)
 
-        /**/
+
+        //SOMETHING WEIRD is going on with the google api, can't seem to get it to find the map and panorama object again.  will simply do a reload
+        //window.location.reload();
+
+
+        /*        
         var resettedMemoryForm = {}
         Object.keys(this.props.memoryFormVars).map(key => {
-            resettedMemoryForm[key] = ""
+
+            //I don't want to reset the map and panorama objects
+            if (['map', 'panorama'].includes(key)) {
+                resettedMemoryForm[key] = this.props.memoryFormVars[key]
+            }
+            else {
+                resettedMemoryForm[key] = ""
+            }
+
         })
 
+        console.log("resettedMemoryForm")
         console.log(resettedMemoryForm)
+
         this.props.updateMemoryForm({
             ...resettedMemoryForm
 
         })
+        */
+
+
 
     }
     onChange = e => {
@@ -92,8 +115,12 @@ class MemoryForm extends React.Component {
                 value = [...target.options].filter(o => o.selected).map(o => o.id)
                 //value = [...target.options].filter(o => o.selected)
             }
+
+
             else {
-                value = target.value
+                if (name !== "camera_address") {
+                    value = target.value
+                }
             }
 
             this.props.updateMemoryForm({
@@ -111,32 +138,95 @@ class MemoryForm extends React.Component {
         ///DON'T WANT THIS UPDATING ALL THE TIME I SUPPOSE
 
         console.log("memoryform componentdidupdate")
+        if (searchBox) {
 
-        var searchBox = new google.maps.places.SearchBox(document.getElementById('camera_address'));
 
-        console.log("searchbox defined")
-        console.log("this.props.memoryFormVars")
-        console.log(this.props.memoryFormVars)
 
-        var map = this.props.memoryFormVars.map
-        var pano = this.props.memoryFormVars.panorama
-        //at least here it know what map is 
+        }
+        else {
+            console.log("SEARCHBOX NOT DETECTED")
 
-        google.maps.event.addListener(searchBox, 'places_changed', () => {
+            var searchBox = new google.maps.places.SearchBox(document.getElementById('camera_address'));
+            var map = this.props.memoryFormVars.map
+            var pano = this.props.memoryFormVars.panorama
 
-            var place = searchBox.getPlaces()[0]
+            google.maps.event.addListener(searchBox, 'places_changed', () => {
 
-            console.log("FROM WITHIN THE LISTENER")
+                var place = searchBox.getPlaces()[0]
 
-            if (!place.geometry) return;
+                console.log("FROM WITHIN THE LISTENER")
 
-            console.log("place.geometry.location")
-            console.log(place.geometry.location)
-            map.setCenter(place.geometry.location);
-            pano.setPosition(place.geometry.location);
-            map.setZoom(14);
+                if (!place.geometry) return;
 
-        });
+                console.log("place.geometry.location")
+                console.log(place.geometry.location)
+                map.setCenter(place.geometry.location);
+                pano.setPosition(place.geometry.location);
+                map.setZoom(14);
+
+            });
+
+
+            console.log("ADDING PANO LISTENER")
+            google.maps.event.addListener(pano, 'position_changed', () => {
+
+                //sketchy way of getting pano's address, did not find any other way online
+
+                //there are at least two ways of it showing up. checking if method 1 is the case
+                var short_address = document.getElementsByClassName("gm-iv-short-address-description")[0];
+
+                if (typeof (short_address) != 'undefined' && short_address != null) {
+
+                    console.log("typeof (short_address)")
+                    console.log(typeof (short_address))
+                    console.log(short_address)
+                    var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
+                    var pano_address = short_address.innerHTML + ", " + long_address
+                }
+
+                //method 2 if method 1 doesn't exist
+                else {
+                    var pano_address = document.getElementsByClassName("gm-iv-profile-link")[0].innerHTML
+                }
+
+                console.log("pano_address")
+                console.log(pano_address)
+
+                document.getElementById('camera_address').value = pano_address
+
+
+            });
+
+            google.maps.event.addListener(pano, 'pov_changed', () => {
+
+                //sketchy way of getting pano's address, did not find any other way online
+
+                var short_address = document.getElementsByClassName("gm-iv-short-address-description")[0];
+
+                if (typeof (short_address) != 'undefined' && short_address != null) {
+                    console.log("typeof (short_address)")
+                    console.log(typeof (short_address))
+                    console.log(short_address)
+
+                    var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
+                    var pano_address = short_address.innerHTML + ", " + long_address
+
+                }
+
+                //method 2 if method 1 doesn't exist
+                else {
+                    var pano_address = document.getElementsByClassName("gm-iv-profile-link")[0].innerHTML
+                }
+
+                console.log("pano_address")
+                console.log(pano_address)
+
+                document.getElementById('camera_address').value = pano_address
+
+
+            });
+
+        }
 
     }
 
@@ -145,8 +235,6 @@ class MemoryForm extends React.Component {
     componentDidMount() {
         this.props.getCategories()
         console.log("memoryform mounting")
-
-
 
     }
 
