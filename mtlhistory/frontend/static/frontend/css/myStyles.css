@@ -7,6 +7,7 @@
       #infoWindowContent{
         width:800px;
         height:400px;
+
       }
       
 
@@ -14,6 +15,9 @@
         float: left;
         height: 100%;
         width: 33%;
+      }
+      #memory_description{
+        float: left;
       }
 
       #infoWindowContent_input{
