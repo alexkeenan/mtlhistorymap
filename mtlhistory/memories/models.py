@@ -41,7 +41,7 @@ class Memory(models.Model):
     heading=models.FloatField(null=True,blank=True,default=None)
     pitch=models.FloatField(null=True,blank=True)
     zoom=models.FloatField(null=True,blank=True,default=None)
-    dateofmemory= models.DateField()
+    dateofmemory= models.DateField(null=True,blank=True,default=None)
     owner=models.ForeignKey(User,related_name="memories",null=True,on_delete=models.SET_NULL)
     category = models.ManyToManyField(MemoryCategory,null=True,blank=True)
     #one picture could belong to many categories

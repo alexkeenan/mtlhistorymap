@@ -44,39 +44,6 @@ class MemoryViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
-"""
-class MemoryViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticated,
-    ]
-    serializer_class = MemorySerializer
-
-    def get_queryset(self):
-        return Memory.objects.all()
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-
-
-#if I do this, i get NOT FOUND 404 error
-class MemoryViewSet(viewsets.ViewSet):
-    parser_classes = (MultiPartParser, FormParser)
-    serializer_class = MemorySerializer
-
-    def get_queryset(self):
-        memories= Memory.objects.all()
-        return memories
-
-    def post(self, request, *args, **kwargs):
-        file_serializer = self.get_serializer(data=request.data)
-        if file_serializer.is_valid():
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-"""
 
 class MemoryCategoriesViewSet(viewsets.ModelViewSet):
     permission_classes = [

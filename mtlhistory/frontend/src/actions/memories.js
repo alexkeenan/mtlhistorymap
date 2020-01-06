@@ -127,14 +127,19 @@ export const addMemory = memory => (dispatch, getState) => {
             'Authorization': `Token ${token}`
         },
         body: formData
-    }).then(res => {
-
-        dispatch({
-            type: ADD_MEMORY,
-            payload: res.data
-        })
-        dispatch(createMessage({ addMemory: "Memory Created!" }))
     })
+        .then(res => {
+
+            dispatch({
+                type: ADD_MEMORY, payload: res.data
+            })
+
+            /*
+            dispatch(createMessage({
+                addMemory: "Memory Created!"
+            }))
+            */
+        })
         .catch(err =>
             dispatch(returnErrors(err.response.data, err.response.status))
         )

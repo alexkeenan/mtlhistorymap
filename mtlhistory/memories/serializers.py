@@ -48,9 +48,11 @@ class Base64ImageField(serializers.ImageField):
 
 class MemorySerializer(serializers.ModelSerializer):
 
+    """
     photo = serializers.FileField(
         max_length=None, use_url=True,
     )
+    """
 
     class Meta:
         model=Memory

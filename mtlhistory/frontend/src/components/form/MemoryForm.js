@@ -40,11 +40,12 @@ class MemoryForm extends React.Component {
         var memory = { title, description, camera_address, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category }
 
 
-        //only add if user added it
+        //only add if user added it. These variables are not required. Even if I state them in the django model as not required, I still get problems for some reason
 
         photo !== null ? memory = { ...memory, photo } : null
         video !== null ? memory = { ...memory, video } : null
         audio !== null ? memory = { ...memory, audio } : null
+        dateofmemory !== null ? memory = { ...memory, dateofmemory } : null
 
         console.log("memory SUBMITTED")
         console.log(memory)
@@ -60,8 +61,8 @@ class MemoryForm extends React.Component {
         var resettedMemoryForm = {}
         Object.keys(this.props.memoryFormVars).map(key => {
 
-            //I don't want to reset the map and panorama objects
-            if (['map', 'panorama'].includes(key)) {
+            //I don't want to reset these, causes problems
+            if (['map', 'panorama', 'category'].includes(key)) {
                 resettedMemoryForm[key] = this.props.memoryFormVars[key]
             }
             else {
