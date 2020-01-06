@@ -29,14 +29,15 @@ class MemoryForm extends React.Component {
     onSubmit = e => {
         e.preventDefault();
 
+        console.log("SUBMITTING")
 
-        this.props.updateMemoryForm({
+        var camera_address = document.getElementById('camera_address').value
 
-            ["camera_address"]: document.getElementById('camera_address').value
-        })
+        console.log("camera_address")
+        console.log(camera_address)
 
-        const { title, description, photo, video, audio, camera_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category } = this.props.memoryFormVars
-        var memory = { title, description, camera_address, old_address, longitude, latitude, heading, pitch, dateofmemory, owner, category }
+        const { title, description, photo, video, audio, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category } = this.props.memoryFormVars
+        var memory = { title, description, camera_address, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category }
 
 
         //only add if user added it
@@ -55,7 +56,7 @@ class MemoryForm extends React.Component {
         //window.location.reload();
 
 
-        /*        
+
         var resettedMemoryForm = {}
         Object.keys(this.props.memoryFormVars).map(key => {
 
@@ -76,6 +77,7 @@ class MemoryForm extends React.Component {
             ...resettedMemoryForm
 
         })
+        /*
         */
 
 
@@ -133,7 +135,7 @@ class MemoryForm extends React.Component {
 
 
 
-    componentDidUpdate() {
+    componentDidUpdate = () => {
 
         ///DON'T WANT THIS UPDATING ALL THE TIME I SUPPOSE
 
@@ -149,6 +151,7 @@ class MemoryForm extends React.Component {
             var searchBox = new google.maps.places.SearchBox(document.getElementById('camera_address'));
             var map = this.props.memoryFormVars.map
             var pano = this.props.memoryFormVars.panorama
+            var pano_address = ""
 
             google.maps.event.addListener(searchBox, 'places_changed', () => {
 
@@ -181,7 +184,7 @@ class MemoryForm extends React.Component {
                     console.log(typeof (short_address))
                     console.log(short_address)
                     var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
-                    var pano_address = short_address.innerHTML + ", " + long_address
+                    pano_address = short_address.innerHTML + ", " + long_address
                 }
 
                 //method 2 if method 1 doesn't exist
@@ -209,7 +212,7 @@ class MemoryForm extends React.Component {
                     console.log(short_address)
 
                     var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
-                    var pano_address = short_address.innerHTML + ", " + long_address
+                    pano_address = short_address.innerHTML + ", " + long_address
 
                 }
 
@@ -225,6 +228,9 @@ class MemoryForm extends React.Component {
 
 
             });
+
+
+
 
         }
 
@@ -301,8 +307,9 @@ class MemoryForm extends React.Component {
                                 type="text"
                                 name="camera_address"
                                 onChange={this.onChange}
-                                value={this.props.memoryFormVars.camera_address}
-                            />
+                            >
+
+                            </input>
                         </div>
                         <div className="form-group">
                             <label>Address of memory (Address at the time)</label>
