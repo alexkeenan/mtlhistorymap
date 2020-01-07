@@ -19,6 +19,7 @@ export class Alerts extends Component {
             if (error.msg.non_field_errors)
                 alert.error(error.msg.non_field_errors.join());
             if (error.msg.username) alert.error(error.msg.username.join());
+            if (error.msg.title) alert.error(error.msg.title.join());
             if (error.msg.dateofmemory) alert.error("date missing or in wrong format. Should be mm/dd/yyyy");
             if (error.msg.photo) alert.error(error.msg.photo.join());
             if (error.msg.category) alert.error("please select a category");

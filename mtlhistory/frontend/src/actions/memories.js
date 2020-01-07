@@ -9,6 +9,7 @@ import { TokenConfig } from './auth'
 
 
 export const getMemories = () => (dispatch, getState) => {
+    console.log("FETCHING THE MEMORIES")
     axios
         .get('api/memories/', TokenConfig(getState))
         .then(res => {
@@ -131,14 +132,14 @@ export const addMemory = memory => (dispatch, getState) => {
         .then(res => {
 
             dispatch({
-                type: ADD_MEMORY, payload: res.data
+                type: ADD_MEMORY
             })
 
-            /*
             dispatch(createMessage({
                 addMemory: "Memory Created!"
             }))
-            */
+
+
         })
         .catch(err =>
             dispatch(returnErrors(err.response.data, err.response.status))

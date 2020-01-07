@@ -58,9 +58,7 @@ class MemoryForm extends React.Component {
         //this here is to update the memories in my state. If I went back to the front page and I didn't retrieve the new states, then it would cause an error. 
         //TEMPORARY FIX, the retrieval should be coming from that home page. 
         //############
-
-
-        //this.props.getMemories();
+        this.props.getMemories();
 
 
         var resettedMemoryForm = {}
@@ -163,8 +161,12 @@ class MemoryForm extends React.Component {
 
                 var place = searchBox.getPlaces()[0]
 
+                console.log("FROM WITHIN THE LISTENER")
+
                 if (!place.geometry) return;
 
+                console.log("place.geometry.location")
+                console.log(place.geometry.location)
                 map.setCenter(place.geometry.location);
                 pano.setPosition(place.geometry.location);
                 map.setZoom(14);
@@ -182,6 +184,9 @@ class MemoryForm extends React.Component {
 
                 if (typeof (short_address) != 'undefined' && short_address != null) {
 
+                    console.log("typeof (short_address)")
+                    console.log(typeof (short_address))
+                    console.log(short_address)
                     var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
                     pano_address = short_address.innerHTML + ", " + long_address
                 }
@@ -190,6 +195,10 @@ class MemoryForm extends React.Component {
                 else {
                     var pano_address = document.getElementsByClassName("gm-iv-profile-link")[0].innerHTML
                 }
+
+                console.log("pano_address")
+                console.log(pano_address)
+
                 document.getElementById('camera_address').value = pano_address
 
 
@@ -202,6 +211,9 @@ class MemoryForm extends React.Component {
                 var short_address = document.getElementsByClassName("gm-iv-short-address-description")[0];
 
                 if (typeof (short_address) != 'undefined' && short_address != null) {
+                    console.log("typeof (short_address)")
+                    console.log(typeof (short_address))
+                    console.log(short_address)
 
                     var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
                     pano_address = short_address.innerHTML + ", " + long_address
@@ -212,6 +224,9 @@ class MemoryForm extends React.Component {
                 else {
                     var pano_address = document.getElementsByClassName("gm-iv-profile-link")[0].innerHTML
                 }
+
+                console.log("pano_address")
+                console.log(pano_address)
 
                 document.getElementById('camera_address').value = pano_address
 
@@ -320,6 +335,56 @@ class MemoryForm extends React.Component {
                             />
                         </div>
 
+                        <div className="form-group">
+                            <label>Longitude </label>
+                            <input
+                                className="form-control"
+                                type="number"
+                                name="longitude"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.longitude}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Latitude</label>
+                            <input
+                                className="form-control"
+                                type="number"
+                                name="latitude"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.latitude}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Heading</label>
+                            <input
+                                className="form-control"
+                                type="number"
+                                name="heading"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.heading}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Pitch</label>
+                            <input
+                                className="form-control"
+                                type="number"
+                                name="pitch"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.pitch}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Zoom</label>
+                            <input
+                                className="form-control"
+                                type="number"
+                                name="pitch"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.zoom}
+                            />
+                        </div>
                         <div className="form-group">
                             <label>Date of Memory</label>
                             <input

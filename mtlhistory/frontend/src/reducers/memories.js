@@ -3,6 +3,10 @@ import {
     GET_MEMORIES, ADD_MEMORY, DELETE_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM
 } from "../actions/types";
 
+
+import { getMemories } from '../actions/memories'
+
+
 const initialState = {
     memories: [],
     categories: [],
@@ -31,7 +35,7 @@ export default function (state = initialState, action) {
         case ADD_MEMORY:
             return {
                 ...state,
-                memories: [...state.memories, action.payload]
+                memories: [...state.memories]
             };
 
         case GET_MEMORY_FORM:

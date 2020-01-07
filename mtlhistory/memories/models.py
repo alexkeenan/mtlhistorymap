@@ -29,7 +29,7 @@ class MemoryCategory(models.Model):
 
 # Create your models here.
 class Memory(models.Model):
-    title = models.CharField(max_length=50,null=True)
+    title = models.CharField(max_length=50,null=False,default="Another echo in time")
     description = models.TextField(blank=True,default='',null=True)
     photo = models.FileField(upload_to='images/',null=True,blank=True,default=None,verbose_name="Image")
     video= models.FileField(upload_to='videos/', null=True, blank=True,default=None,verbose_name="Video")

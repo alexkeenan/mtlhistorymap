@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { logout } from '../actions/auth'
 
 class Header extends Component {
@@ -33,33 +33,35 @@ class Header extends Component {
         const memberLink = (
             <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
                 <span className="navbar-text mr-3">
-                    <strong>{user ? `Welcome ${user.username}` : ""}</strong>
-                </span>
-                <li className="nav-item">
+                    <strong>{user ? "Welcome " : ""}</strong>
+                    <strong className="text-light">{user ? `${user.username}` : ""}</strong>
 
-                    <Link to="/add-memory">Add memory</Link>
+                </span>
+                <li className="nav-link">
+
+                    <NavLink className="text-light" to="/add-memory">Add Memory</NavLink>
 
                 </li>
                 <li className="nav-item">
                     <button
                         onClick={this.props.logout}
-                        className="nav-link btn btn-info btn-sm text-light"
+                        className="nav-link btn btn-danger btn-sm text-light"
                     >
                         Logout
                         </button>
                 </li>
-            </ul>
+            </ul >
         )
 
 
 
         return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            < nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
                 <a className="navbar-brand" href="#">Montreal Through Time</a>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
+                <div className="collapse navbar-collapse" id="navbarColor02">
                     <ul className="navbar-nav">
                         <li className="nav-item active">
                             <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
@@ -69,8 +71,9 @@ class Header extends Component {
                                 About
                             </Link>
                         </li>
-                        {isAuthenticated ? memberLink : guestLinks}
+
                     </ul>
+                    {isAuthenticated ? memberLink : guestLinks}
                 </div>
 
             </nav>
