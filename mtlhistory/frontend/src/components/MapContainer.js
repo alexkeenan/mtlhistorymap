@@ -14,9 +14,7 @@ import {
     toggleInfoWindow, toggleShowPanorama, setActiveMarker, setSelectedPlace
 } from '../actions/dashboard'
 
-
 //can set marker properly at the app state level, but for some reason is not immediately updated here
-//
 
 class MapContainer extends Component {
 
