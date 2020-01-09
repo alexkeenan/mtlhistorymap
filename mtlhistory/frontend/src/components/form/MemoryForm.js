@@ -249,7 +249,7 @@ class MemoryForm extends React.Component {
         }
 
         //background image for input image placeholder
-        var backgroundImageUrl = "/static/img/camera_logo.png'"
+        var backgroundImageUrl = "/static/frontend/img/camera_logo.png'"
         const placeholderstyle = {
             backgroundImage: `url(${backgroundImageUrl})`,
             backgroundColor: "grey",

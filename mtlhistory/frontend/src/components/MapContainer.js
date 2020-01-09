@@ -14,10 +14,6 @@ import {
     toggleInfoWindow, toggleShowPanorama, setActiveMarker, setSelectedPlace
 } from '../actions/dashboard'
 
-const mapStyles = {
-    width: '100%',
-    height: '90%',
-};
 
 //can set marker properly at the app state level, but for some reason is not immediately updated here
 //
@@ -147,22 +143,10 @@ class MapContainer extends Component {
             zoom: zoom
         });
 
-        console.log(panorama)
-
-        console.log('panorama.getPov()')
-        console.log(panorama.getPov())
-
-        console.log('panorama.getPosition()')
-        console.log(panorama.getPosition())
-
         panorama.addListener('position_changed', function () {
-            console.log(panorama.getPosition() + '')
         });
 
         panorama.addListener('pov_changed', function () {
-            console.log('heading ' + panorama.getPov().heading + '')
-            console.log('pitch ' + panorama.getPov().pitch + '')
-            console.log('pitch ' + panorama.getPov().zoom + '')
         });
 
         //map.setStreetView(panorama);
@@ -173,34 +157,35 @@ class MapContainer extends Component {
 
 
         return this.props.panoramaReady ? (
-            <Map
-                google={this.props.google}
-                onClick={this.onMapClicked}
-                zoom={8}
-                style={mapStyles}
-                initialCenter={{ lat: 45.5017, lng: - 73.58781 }
-                }
-            >
-                {this.displayMarkers()}
-
-                <InfoWindow
-                    marker={this.props.dashboard.activeMarker}
-                    visible={
-                        //this.props.dashboard.showingInfoWindow
-                        //this.state.showingInfoWindow
-                        true
-
+            <div className="mapContainerStyle">
+                <Map id='mapcontainer'
+                    google={this.props.google}
+                    onClick={this.onMapClicked}
+                    zoom={8}
+                    initialCenter={{ lat: 45.5017, lng: - 73.58781 }
                     }
-                    maxWidth="800px"
-                    onOpen={e => {
-                        this.onInfoWindowOpen(this.props, e);
-                    }}
                 >
-                    <div id="InfoWindowContent" />
+                    {this.displayMarkers()}
 
-                </InfoWindow>
+                    <InfoWindow
+                        marker={this.props.dashboard.activeMarker}
+                        visible={
+                            //this.props.dashboard.showingInfoWindow
+                            //this.state.showingInfoWindow
+                            true
 
-            </Map >
+                        }
+                        maxWidth="800px"
+                        onOpen={e => {
+                            this.onInfoWindowOpen(this.props, e);
+                        }}
+                    >
+                        <div id="InfoWindowContent" />
+
+                    </InfoWindow>
+
+                </Map >
+            </div>
 
         ) : (null)
     }
