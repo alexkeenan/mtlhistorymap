@@ -9,4 +9,4 @@ mtlhistory/mtlhistory/settings_old.py
 mtlhistory/mtlhistory/settings/development.py
 mtlhistory/mtlhistory/settings/production.py
 mtlhistory/mtlhistory/wsgi.py
-static/
+static
