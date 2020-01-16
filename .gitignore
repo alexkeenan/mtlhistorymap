@@ -1,6 +1,6 @@
 pics/
 scrapping_code/
-node_modules
+node_modules/
 mtlhistory/media/
 mtlhistory/frontend/static/frontend/img/
 mtlhistory/settings.ini
@@ -10,3 +10,4 @@ mtlhistory/mtlhistory/settings/development.py
 mtlhistory/mtlhistory/settings/production.py
 mtlhistory/mtlhistory/wsgi.py
 static
+static/
