@@ -180,7 +180,7 @@ class MemoryForm extends React.Component {
                 //there are at least two ways of it showing up. checking if method 1 is the case
                 var short_address = document.getElementsByClassName("gm-iv-short-address-description")[0];
 
-                if (typeof (short_address) != 'undefined' && short_address != null && short_address != "") {
+                if (typeof (short_address) != 'undefined' && short_address != null) {
                     var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
                     pano_address = short_address.innerHTML
 
@@ -207,13 +207,13 @@ class MemoryForm extends React.Component {
 
                 var short_address = document.getElementsByClassName("gm-iv-short-address-description")[0];
 
-                if (typeof (short_address) != 'undefined' && short_address != null && short_address != "") {
-                    console.log("short_address type 2")
-                    console.log(short_address)
+                if (typeof (short_address) != 'undefined' && short_address != null) {
+
                     var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
                     pano_address = short_address.innerHTML
 
                     if (long_address.trim().length > 0) {
+
                         pano_address += ", " + long_address
                     }
                 }
