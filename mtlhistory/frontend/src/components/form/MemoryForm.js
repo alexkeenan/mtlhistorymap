@@ -180,16 +180,22 @@ class MemoryForm extends React.Component {
                 //there are at least two ways of it showing up. checking if method 1 is the case
                 var short_address = document.getElementsByClassName("gm-iv-short-address-description")[0];
 
-                if (typeof (short_address) != 'undefined' && short_address != null) {
-
+                if (typeof (short_address) != 'undefined' && short_address != null && short_address != "") {
                     var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
-                    pano_address = short_address.innerHTML + ", " + long_address
+                    pano_address = short_address.innerHTML
+
+                    if (long_address.trim().length > 0) {
+                        pano_address += ", " + long_address
+                    }
+
+
                 }
 
                 //method 2 if method 1 doesn't exist
                 else {
                     var pano_address = document.getElementsByClassName("gm-iv-profile-link")[0].innerHTML
                 }
+
                 document.getElementById('camera_address').value = pano_address
 
 
@@ -201,15 +207,20 @@ class MemoryForm extends React.Component {
 
                 var short_address = document.getElementsByClassName("gm-iv-short-address-description")[0];
 
-                if (typeof (short_address) != 'undefined' && short_address != null) {
-
+                if (typeof (short_address) != 'undefined' && short_address != null && short_address != "") {
+                    console.log("short_address type 2")
+                    console.log(short_address)
                     var long_address = document.getElementsByClassName("gm-iv-long-address-description")[0].innerHTML
-                    pano_address = short_address.innerHTML + ", " + long_address
+                    pano_address = short_address.innerHTML
 
+                    if (long_address.trim().length > 0) {
+                        pano_address += ", " + long_address
+                    }
                 }
 
                 //method 2 if method 1 doesn't exist
                 else {
+
                     var pano_address = document.getElementsByClassName("gm-iv-profile-link")[0].innerHTML
                 }
 
