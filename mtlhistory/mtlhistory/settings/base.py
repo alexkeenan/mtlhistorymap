@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     'accounts',
     'knox',
     'memories',
-    'corsheaders'
+    'corsheaders',
+    'storages'
 
 ]
 
