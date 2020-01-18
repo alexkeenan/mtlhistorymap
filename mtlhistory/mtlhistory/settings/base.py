@@ -132,7 +132,7 @@ STATIC_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.dirname(BASE
 #STATIC_URL=STATIC_ROOT
 
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media/')
-MEDIA_URL= "/media/"
+
 
 
 

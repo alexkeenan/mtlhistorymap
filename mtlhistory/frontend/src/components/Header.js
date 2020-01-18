@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link, NavLink } from 'react-router-dom'
 import { logout } from '../actions/auth'
+import { getMemories, getMemoryForm } from '../actions/memories'
+
 
 class Header extends Component {
     static propTypes = {
@@ -39,7 +41,7 @@ class Header extends Component {
                 </span>
                 <li className="nav-link">
 
-                    <NavLink className="text-light" to="/add-memory">Add Memory</NavLink>
+                    <NavLink className="text-light" to="/add-memory" onClick={this.props.getMemoryForm()}>Add Memory</NavLink>
 
                 </li>
                 <li className="nav-item">
@@ -56,15 +58,14 @@ class Header extends Component {
 
 
         return (
-            < nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
-                <a className="navbar-brand" href="#">Montreal Through Time</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            < nav className="navbar navbar-expand-lg navbar-dark bg-dark" >
+
+                <Link to="/" className="navbar-brand" onClick={this.props.getMemories}>Montreal Through Time</Link>
+
                 <div className="collapse navbar-collapse" id="navbarColor02">
                     <ul className="navbar-nav">
                         <li className="nav-item active">
-                            <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+                            <Link to="/" className="nav-link" onClick={this.props.getMemories}>Home</Link>
                         </li>
                         <li className="nav-item">
                             <Link to="/about" className="nav-link">
@@ -83,6 +84,7 @@ class Header extends Component {
 
 const mapStateToProps = state => ({
     auth: state.auth
+
 })
 
-export default connect(mapStateToProps, { logout })(Header)
+export default connect(mapStateToProps, { logout, getMemories, getMemoryForm })(Header)

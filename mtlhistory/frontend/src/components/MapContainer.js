@@ -29,14 +29,10 @@ class MapContainer extends Component {
     componentDidMount() {
         //gets the data for all memories
         this.props.getMemories();
-        //loads google's api
+        //loads google's api, only need to do this once
         this.props.getPanorama();
-
-        //trying this out
-        this.props.getMemoryForm()
-
-        console.log("mounted")
-        console.log(this.props.match.path)
+        //console.log("mounted")
+        //console.log(this.props.match.path)
 
     }
 
@@ -199,7 +195,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     getMemories, getPanorama, toggleInfoWindow, toggleShowPanorama, setActiveMarker,
-    setSelectedPlace, getMemoryForm
+    setSelectedPlace
 })((GoogleApiWrapper({
     apiKey: 'AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk'
 }))(MapContainer))
