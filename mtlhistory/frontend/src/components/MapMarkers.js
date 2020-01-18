@@ -1,6 +1,5 @@
 import React, { Component, Fragment, useEffect, useState, useRef } from 'react'
-import { getMemories } from '../actions/memories'
-import { connect } from 'react-redux'
+
 import { Marker } from 'google-maps-react';
 
 class MapMarkers extends Component {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {
-    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM
+    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM, EMPTY_MEMORIES
 } from "./types";
 
 import { createMessage, returnErrors } from "./messages"
@@ -9,7 +9,6 @@ import { TokenConfig } from './auth'
 
 
 export const getMemories = () => (dispatch, getState) => {
-    console.log("FETCHING THE MEMORIES")
     axios
         .get('api/memories/', TokenConfig(getState))
         .then(res => {
@@ -20,6 +19,17 @@ export const getMemories = () => (dispatch, getState) => {
         })
         .catch(err => console.log(err.response.data))
 }
+
+//empty memories is so that when you switch back to the home page after having created new memories, the map will only load AFTER you've gotten yourself the new set of memories
+//what would happen is that it would load the map twice, once before the new set of memories was finished loading and another once it was. That caused issues with the map.
+export const emptyMemories = () => (dispatch) => {
+    dispatch({
+        type: EMPTY_MEMORIES,
+        payload: []
+    })
+}
+
+
 
 
 export const getCategories = () => (dispatch, getState) => {

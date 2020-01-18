@@ -10,7 +10,7 @@ const initialState = {
 export default function (state = initialState, action) {
     switch (action.type) {
         case GET_PANORAMA:
-            console.log("got to reducer")
+
             return {
                 ...state,
                 panoramaReady: action.payload

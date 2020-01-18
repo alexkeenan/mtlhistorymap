@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { getCategories, getMemories, addMemory, getMemoryForm, updateMemoryForm } from '../../actions/memories'
+import { getCategories, addMemory, getMemoryForm, updateMemoryForm } from '../../actions/memories'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import MemoryStreetView from './MemoryStreetView'
@@ -34,9 +34,6 @@ class MemoryForm extends React.Component {
 
         var camera_address = document.getElementById('camera_address').value
 
-        console.log("camera_address")
-        console.log(camera_address)
-
         const { title, description, photo, video, audio, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category } = this.props.memoryFormVars
         var memory = { title, description, camera_address, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category }
 
@@ -53,16 +50,6 @@ class MemoryForm extends React.Component {
 
         this.props.addMemory(memory)
 
-
-        //#####################
-        //this here is to update the memories in my state. If I went back to the front page and I didn't retrieve the new states, then it would cause an error. 
-        //TEMPORARY FIX, the retrieval should be coming from that home page. 
-        //############
-
-
-        //this.props.getMemories();
-
-
         var resettedMemoryForm = {}
         Object.keys(this.props.memoryFormVars).map(key => {
 
@@ -76,9 +63,6 @@ class MemoryForm extends React.Component {
 
         })
 
-        console.log("resettedMemoryForm")
-        console.log(resettedMemoryForm)
-
         this.props.updateMemoryForm({
             ...resettedMemoryForm
 
@@ -86,15 +70,12 @@ class MemoryForm extends React.Component {
         /*
         */
 
-
-
     }
     onChange = e => {
         e.preventDefault();
         let target = e.target
         let name = target.name
         let value = null
-
 
         if (name === "photo") {
             value = target.files[0]
@@ -117,13 +98,8 @@ class MemoryForm extends React.Component {
         else {
 
             if (name === "category") {
-                console.log("DETECTED CHANGE IN CATEGORY")
-                //the model is looking for the id key of the category, not the string name. 
-                //so I'm concatinating the ids of the options
                 value = [...target.options].filter(o => o.selected).map(o => o.id)
-                //value = [...target.options].filter(o => o.selected)
             }
-
 
             else {
                 if (name !== "camera_address") {
@@ -143,12 +119,7 @@ class MemoryForm extends React.Component {
 
     componentDidUpdate = () => {
 
-        ///DON'T WANT THIS UPDATING ALL THE TIME I SUPPOSE
-
-        console.log("memoryform componentdidupdate")
         if (searchBox) {
-
-
 
         }
         else {
@@ -391,7 +362,7 @@ const mapStateToProps = state => ({
 
 
 
-export default connect(mapStateToProps, { getCategories, getMemories, addMemory, getMemoryForm, updateMemoryForm })(MemoryForm)
+export default connect(mapStateToProps, { getCategories, addMemory, getMemoryForm, updateMemoryForm })(MemoryForm)
 
 
 

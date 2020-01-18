@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link, NavLink } from 'react-router-dom'
 import { logout } from '../actions/auth'
-import { getMemories, getMemoryForm } from '../actions/memories'
+import { getMemoryForm, emptyMemories } from '../actions/memories'
 
 
 class Header extends Component {
@@ -60,12 +60,12 @@ class Header extends Component {
         return (
             < nav className="navbar navbar-expand-lg navbar-dark bg-dark" >
 
-                <Link to="/" className="navbar-brand" onClick={this.props.getMemories}>Montreal Through Time</Link>
+                <Link to="/" className="navbar-brand" onClick={this.props.emptyMemories}>Montreal Through Time</Link>
 
                 <div className="collapse navbar-collapse" id="navbarColor02">
                     <ul className="navbar-nav">
                         <li className="nav-item active">
-                            <Link to="/" className="nav-link" onClick={this.props.getMemories}>Home</Link>
+                            <Link to="/" className="nav-link" onClick={this.props.emptyMemories}>Home</Link>
                         </li>
                         <li className="nav-item">
                             <Link to="/about" className="nav-link">
@@ -87,4 +87,4 @@ const mapStateToProps = state => ({
 
 })
 
-export default connect(mapStateToProps, { logout, getMemories, getMemoryForm })(Header)
+export default connect(mapStateToProps, { logout, getMemoryForm, emptyMemories })(Header)

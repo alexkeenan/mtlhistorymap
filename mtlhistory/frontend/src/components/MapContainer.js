@@ -36,25 +36,16 @@ class MapContainer extends Component {
 
     }
 
-
-    //props, marker, e
     onMarkerClick = (properties, marker, e) => {
-
         this.props.setActiveMarker(marker)
-        //for some reason active marker doesn't show up here.
-
         this.props.setSelectedPlace(properties)
-        //this.props.toggleInfoWindow(
-
         this.setState(prevState => ({
             ...prevState,
             showingInfoWindow: !prevState.showingInfoWindow
         }))
-        //active marker is not defined
     }
 
     onMapClicked = (props) => {
-        //closes the info window
         if (this.props.showInfoWindow) {
             this.props.toggleInfoWindow()
         }
@@ -62,12 +53,6 @@ class MapContainer extends Component {
 
 
     displayMarkers = () => {
-        console.log("this.props.memories_list")
-        console.log(this.props.memories_list)
-
-        //the problem is that the new memory you create will show up as "undefined in this list", why is that?
-        //almost like memories is not fully updated. But isn't that what redux is supposed to take care of?
-
 
         return this.props.memories_list.map((memory, index) => {
             return (
@@ -87,6 +72,7 @@ class MapContainer extends Component {
                     zoom={memory.zoom}
                     onClick={this.onMarkerClick} />
             )
+
         })
     }
 
@@ -95,16 +81,13 @@ class MapContainer extends Component {
 
     }
 
+
     onInfoWindowOpen(props, e) {
         var { lat, lng } = this.props.dashboard.selectedPlace.position
         var { heading, pitch } = this.props.dashboard.selectedPlace.pov
         var zoom = this.props.dashboard.zoom
-
-
         const coordinates = { lat: parseFloat(lat), lng: parseFloat(lng) };
-
         const markerId = this.props.dashboard.selectedPlace.id
-
         const photoSrc = this.props.memories_list[markerId].photo
         const memory_description = this.props.memories_list[markerId].description
         const content = (
@@ -122,13 +105,9 @@ class MapContainer extends Component {
             </div>
         )
 
-        //this.setState({mapDiv: this.mapDiv.current,            panDiv: this.panDiv.current,        });
-
         ReactDOM.render(React.Children.only(content), document.getElementById("InfoWindowContent"));
 
-        //var map = new google.maps.Map(            document.getElementById('map'), {center: coordinates,            zoom: 14        });
-
-        const panorama = new window.google.maps.StreetViewPanorama(
+        var panorama = new window.google.maps.StreetViewPanorama(
             document.getElementById('pano'), {
             position: coordinates,
             pov: {
@@ -136,6 +115,7 @@ class MapContainer extends Component {
             },
             zoom: zoom
         });
+
 
         panorama.addListener('position_changed', function () {
         });
@@ -147,11 +127,14 @@ class MapContainer extends Component {
 
     }
 
+
+
     render() {
 
+        return (this.props.panoramaReady && this.props.memories_list.length) ? (
 
-        return this.props.panoramaReady ? (
             <div className="mapContainerStyle">
+                {console.log("started whole map process")}
                 <Map id='mapcontainer'
                     google={this.props.google}
                     onClick={this.onMapClicked}
@@ -160,28 +143,27 @@ class MapContainer extends Component {
                     }
                 >
                     {this.displayMarkers()}
-
                     <InfoWindow
                         marker={this.props.dashboard.activeMarker}
                         visible={
-                            //this.props.dashboard.showingInfoWindow
-                            //this.state.showingInfoWindow
                             true
-
                         }
                         maxWidth="800px"
                         onOpen={e => {
                             this.onInfoWindowOpen(this.props, e);
                         }}
                     >
+
                         <div id="InfoWindowContent" />
 
                     </InfoWindow>
-
                 </Map >
+                {console.log("got to the end")}
             </div>
 
         ) : (null)
+
+
     }
 }
 
@@ -194,7 +176,7 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps, {
-    getMemories, getPanorama, toggleInfoWindow, toggleShowPanorama, setActiveMarker,
+    getPanorama, getMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker,
     setSelectedPlace
 })((GoogleApiWrapper({
     apiKey: 'AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk'

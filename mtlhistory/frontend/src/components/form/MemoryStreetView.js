@@ -42,7 +42,7 @@ export class MemoryStreetView extends Component {
             zoom: 14
         });
 
-        const panorama = new window.google.maps.StreetViewPanorama(
+        var panorama = new window.google.maps.StreetViewPanorama(
             this.panDiv.current,
 
             {

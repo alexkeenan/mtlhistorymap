@@ -1,11 +1,7 @@
 import reducers from 'react-redux'
 import {
-    GET_MEMORIES, ADD_MEMORY, DELETE_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM
+    GET_MEMORIES, ADD_MEMORY, DELETE_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM, EMPTY_MEMORIES
 } from "../actions/types";
-
-
-import { getMemories } from '../actions/memories'
-
 
 const initialState = {
     memories: [],
@@ -15,6 +11,11 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case EMPTY_MEMORIES:
+            return {
+                ...state,
+                memories: action.payload
+            }
         case GET_MEMORIES:
             return {
                 ...state,
