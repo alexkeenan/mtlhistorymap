@@ -8,6 +8,13 @@ mtlhistory/manage.py
 mtlhistory/mtlhistory/settings_old.py
 mtlhistory/mtlhistory/settings/development.py
 mtlhistory/mtlhistory/settings/production.py
+mtlhistory/mtlhistory/settings/production_2.py
 mtlhistory/mtlhistory/wsgi.py
+mtlhistory/wsgi.py
+
 static
 static/
+mtlhistory/frontend/src/actions/memories.js
+mtlhistory/frontend/src/actions/memories copy.js
+
+
