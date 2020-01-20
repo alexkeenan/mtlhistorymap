@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { createMessage } from "../../actions/messages";
-import { emptyMemories } from "../../actions/memories";
+
 
 class Register extends Component {
     state = {
@@ -95,7 +95,7 @@ class Register extends Component {
                             />
                         </div>
                         <div className="form-group">
-                            <button type="submit" onClick={this.props.emptyMemories} className="btn btn-primary">
+                            <button type="submit" className="btn btn-primary">
                                 Register
               </button>
                         </div>
@@ -112,5 +112,5 @@ class Register extends Component {
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 })
-export default connect(mapStateToProps, { register, createMessage, emptyMemories })(Register)
+export default connect(mapStateToProps, { register, createMessage })(Register)
 

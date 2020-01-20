@@ -99,7 +99,7 @@ export const logout = () => (dispatch, getState) => {
                 type: LOGOUT_SUCCESS
             })
         })
-        .catch(err => console.log(err.response.data)
+        .catch(err => dispatch(returnErrors(err.response.data, err.response.status))
         )
 }
 

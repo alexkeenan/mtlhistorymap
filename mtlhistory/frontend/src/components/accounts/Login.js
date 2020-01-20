@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import { emptyMemories } from "../../actions/memories";
-
 class Login extends Component {
     state = {
         username: "",
@@ -65,7 +63,7 @@ class Login extends Component {
                         </div>
 
                         <div className="form-group">
-                            <button type="submit" onClick={this.props.emptyMemories} className="btn btn-primary">
+                            <button type="submit" className="btn btn-primary">
                                 Login
               </button>
                         </div>
@@ -83,5 +81,5 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, { login, emptyMemories })(Login)
+export default connect(mapStateToProps, { login })(Login)
 

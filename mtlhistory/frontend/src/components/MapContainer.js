@@ -8,7 +8,7 @@ import MapMarkers from './MapMarkers'
 //it seems wrapping markers in fragments will make them not appear on the map
 
 import { connect } from 'react-redux'
-import { getMemories } from '../actions/memories'
+import { getMemories, emptyMemories } from '../actions/memories'
 import { getPanorama } from '../actions/streetview'
 import {
     toggleInfoWindow, toggleShowPanorama, setActiveMarker, setSelectedPlace
@@ -28,6 +28,7 @@ class MapContainer extends Component {
 
     componentDidMount() {
         //gets the data for all memories
+        this.props.emptyMemories();
         this.props.getMemories();
         //loads google's api, only need to do this once
         this.props.getPanorama();
@@ -176,7 +177,7 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps, {
-    getPanorama, getMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker,
+    getPanorama, getMemories, emptyMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker,
     setSelectedPlace
 })((GoogleApiWrapper({
     apiKey: 'AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk'
