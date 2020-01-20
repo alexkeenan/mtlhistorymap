@@ -56,6 +56,12 @@ class Header extends Component {
         )
 
 
+        /*  took out the home button. Redundant with the title button
+
+            <li className="nav-item active">
+                <Link to="/" className="nav-link" onClick={this.props.emptyMemories}>Home</Link>
+            </li>
+        */
 
         return (
             < nav className="navbar navbar-expand-lg navbar-dark bg-dark" >
@@ -64,9 +70,9 @@ class Header extends Component {
 
                 <div className="collapse navbar-collapse" id="navbarColor02">
                     <ul className="navbar-nav">
-                        <li className="nav-item active">
-                            <Link to="/" className="nav-link" onClick={this.props.emptyMemories}>Home</Link>
-                        </li>
+
+
+
                         <li className="nav-item">
                             <Link to="/about" className="nav-link">
                                 About

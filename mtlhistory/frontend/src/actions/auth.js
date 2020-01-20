@@ -58,10 +58,10 @@ export const login = (username, password) => dispatch => {
             })
         })
         .catch(err => {
-            console.log("error logging in")
+            dispatch(returnErrors(err.response.data, err.response.status));
             dispatch({
                 type: LOGIN_FAIL
-            })
+            });
         })
 }
 

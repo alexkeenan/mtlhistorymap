@@ -8,7 +8,7 @@ import MapMarkers from './MapMarkers'
 //it seems wrapping markers in fragments will make them not appear on the map
 
 import { connect } from 'react-redux'
-import { getMemories, getMemoryForm } from '../actions/memories'
+import { getMemories } from '../actions/memories'
 import { getPanorama } from '../actions/streetview'
 import {
     toggleInfoWindow, toggleShowPanorama, setActiveMarker, setSelectedPlace
