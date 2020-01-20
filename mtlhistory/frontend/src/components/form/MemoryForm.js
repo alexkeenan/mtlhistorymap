@@ -115,19 +115,15 @@ class MemoryForm extends React.Component {
 
     }
 
-
-
     componentDidUpdate = () => {
 
-        if (searchBox) {
-
-        }
-        else {
-            console.log("SEARCHBOX NOT DETECTED")
+        if (this.props.memoryFormVars.searchBox === "") {
 
             var searchBox = new google.maps.places.SearchBox(document.getElementById('camera_address'));
             var map = this.props.memoryFormVars.map
             var pano = this.props.memoryFormVars.panorama
+            console.log("pano on update")
+            console.log(pano)
             var pano_address = ""
 
             google.maps.event.addListener(searchBox, 'places_changed', () => {
@@ -142,8 +138,16 @@ class MemoryForm extends React.Component {
 
             });
 
+            this.props.updateMemoryForm({
+                ...this.props.memoryFormVars,
+                searchBox: searchBox
 
-            console.log("ADDING PANO LISTENER")
+            })
+
+            console.log("searchBox after first update")
+            console.log(searchBox)
+
+
             google.maps.event.addListener(pano, 'position_changed', () => {
 
                 //sketchy way of getting pano's address, did not find any other way online
@@ -198,6 +202,9 @@ class MemoryForm extends React.Component {
                 document.getElementById('camera_address').value = pano_address
 
 
+
+
+
             });
 
 
@@ -210,10 +217,16 @@ class MemoryForm extends React.Component {
 
 
     componentDidMount() {
-        //this.props.getMemoryForm()
+        this.props.getMemoryForm()
 
         this.props.getCategories()
         console.log("memoryform mounting")
+
+
+        var pano = this.props.memoryFormVars.panorama
+        console.log("pano at the beginning")
+        console.log(pano)
+
 
     }
 

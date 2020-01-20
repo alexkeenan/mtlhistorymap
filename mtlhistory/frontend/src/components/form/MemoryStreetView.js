@@ -77,6 +77,15 @@ export class MemoryStreetView extends Component {
             var pitch = panorama.getPov().pitch
             var zoom = panorama.getPov().zoom
 
+            /*
+            console.log("PANORAMA MEASUREMENTS")
+            console.log("lat : " + lat + " state.lat " + this.props.memoryFormVars.latitude)
+            console.log("lng : " + lng + " state.longitude " + this.props.memoryFormVars.longitude)
+            console.log("heading : " + heading + " state.heading " + this.props.memoryFormVars.heading)
+            console.log("pitch : " + pitch + " state.pitch " + this.props.memoryFormVars.pitch)
+            console.log("zoom : " + zoom + " state.zoom " + this.props.memoryFormVars.zoom)
+            */
+
             if (lat !== this.props.memoryFormVars.latitude ||
                 lng !== this.props.memoryFormVars.longitude ||
                 heading !== this.props.memoryFormVars.heading ||
@@ -84,14 +93,14 @@ export class MemoryStreetView extends Component {
                 //|| zoom !== this.props.memoryFormVars.zoom
 
             ) {
-
+                /*
                 console.log("detected a real POS change")
                 console.log("lat : " + lat + " state.lat " + this.props.memoryFormVars.latitude)
                 console.log("lng : " + lng + " state.longitude " + this.props.memoryFormVars.longitude)
                 console.log("heading : " + heading + " state.heading " + this.props.memoryFormVars.heading)
                 console.log("pitch : " + pitch + " state.pitch " + this.props.memoryFormVars.pitch)
                 console.log("zoom : " + zoom + " state.zoom " + this.props.memoryFormVars.zoom)
-
+                */
 
                 console.log("counter :" + this.props.memoryFormVars.counter)
                 if (this.props.memoryFormVars.counter < 5) {
@@ -177,6 +186,10 @@ export class MemoryStreetView extends Component {
             zoom: zoom
         })
 
+        console.log("UPDATING LATITUDE")
+        console.log(latitude)
+        console.log("UPDATING LONGITUDE")
+        console.log(longitude)
 
 
 
@@ -207,7 +220,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, { getMemoryForm, updateMemoryForm })(MemoryStreetView)
 
-//the google api wrapper will mess up my normal panorama from showing. Why? who knows 
+//the google api wrapper will mess up my normal panorama from showing. Why? who knows
 //<div id="pano" ref={this.panDiv}></div>
 
 //export default connect(mapStateToProps, { getMemoryForm, updateMemoryForm })((GoogleApiWrapper({ apiKey: 'AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk' }))(MemoryStreetView))
