@@ -32,6 +32,7 @@ export class MemoryStreetView extends Component {
 
 
     componentDidMount() {
+        this.props.getMemoryForm()
         console.log("memory street view mounting")
 
         const coordinates = { lat: parseFloat(this.props.memoryFormVars.latitude), lng: parseFloat(this.props.memoryFormVars.longitude) };
@@ -65,6 +66,8 @@ export class MemoryStreetView extends Component {
             panorama
         })
 
+        console.log("panorama now in redux")
+        console.log(panorama)
         map.setStreetView(panorama);
 
         panorama.addListener('position_changed', () => {
@@ -185,13 +188,6 @@ export class MemoryStreetView extends Component {
             pitch: pitch,
             zoom: zoom
         })
-
-        console.log("UPDATING LATITUDE")
-        console.log(latitude)
-        console.log("UPDATING LONGITUDE")
-        console.log(longitude)
-
-
 
     }
 

@@ -217,7 +217,7 @@ class MemoryForm extends React.Component {
 
 
     componentDidMount() {
-        this.props.getMemoryForm()
+
 
         this.props.getCategories()
         console.log("memoryform mounting")
