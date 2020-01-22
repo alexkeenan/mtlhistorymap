@@ -32,7 +32,7 @@ export class MemoryStreetView extends Component {
 
 
     componentDidMount() {
-        this.props.getMemoryForm()
+        //this.props.getMemoryForm()
         console.log("memory street view mounting")
 
         const coordinates = { lat: parseFloat(this.props.memoryFormVars.latitude), lng: parseFloat(this.props.memoryFormVars.longitude) };

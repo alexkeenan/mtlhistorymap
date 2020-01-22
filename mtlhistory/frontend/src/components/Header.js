@@ -41,7 +41,7 @@ class Header extends Component {
                 </span>
                 <li className="nav-link">
 
-                    <NavLink className="text-light" to="/add-memory" onClick={this.props.getMemoryForm()}>Add Memory</NavLink>
+                    <NavLink className="text-light" to="/add-memory" onClick={this.props.getMemoryForm}>Add Memory</NavLink>
 
                 </li>
                 <li className="nav-item">

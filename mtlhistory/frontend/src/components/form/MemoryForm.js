@@ -67,6 +67,10 @@ class MemoryForm extends React.Component {
             ...resettedMemoryForm
 
         })
+
+        //maybe I should just outright replace everything
+        //this.props.getMemoryForm()
+
         /*
         */
 

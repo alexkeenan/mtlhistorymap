@@ -86,7 +86,8 @@ class MapContainer extends Component {
     onInfoWindowOpen(props, e) {
         var { lat, lng } = this.props.dashboard.selectedPlace.position
         var { heading, pitch } = this.props.dashboard.selectedPlace.pov
-        var zoom = this.props.dashboard.zoom
+        var zoom = this.props.dashboard.selectedPlace.zoom
+        console.log(zoom)
         const coordinates = { lat: parseFloat(lat), lng: parseFloat(lng) };
         const markerId = this.props.dashboard.selectedPlace.id
         const photoSrc = this.props.memories_list[markerId].photo
