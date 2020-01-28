@@ -1,20 +1,22 @@
 import React, { Component, Fragment } from 'react'
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
-import { Link } from 'react-router-dom'
 import ReactDOM from 'react-dom'
-import MapMarkers from './MapMarkers'
-//https://react-google-maps-api-docs.netlify.com/
 
-//it seems wrapping markers in fragments will make them not appear on the map
-
+import MarkerCluster from './markerCluster'
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import { connect } from 'react-redux'
 import { getMemories, emptyMemories } from '../actions/memories'
+import { getGoogleAPI, getCluster } from '../actions/dashboard'
 import { getPanorama } from '../actions/streetview'
 import {
     toggleInfoWindow, toggleShowPanorama, setActiveMarker, setSelectedPlace
 } from '../actions/dashboard'
 
 //can set marker properly at the app state level, but for some reason is not immediately updated here
+//https://react-google-maps-api-docs.netlify.com/
+
+//https://github.com/fullstackreact/google-maps-react/issues/31
+//it seems wrapping markers in fragments will make them not appear on the map
+
 
 class MapContainer extends Component {
 
@@ -27,29 +29,39 @@ class MapContainer extends Component {
     }
 
     componentDidMount() {
-        //gets the data for all memories
         this.props.emptyMemories();
         this.props.getMemories();
-        //loads google's api, only need to do this once
-        this.props.getPanorama();
-        //console.log("mounted")
-        //console.log(this.props.match.path)
+
+
+        if (!this.props.dashboard.googleApiLoaded) {
+
+            this.props.getGoogleAPI()
+            console.log("google api loaded")
+        }
+
+
+        if (!this.props.dashboard.clustersLoaded) {
+            this.props.getCluster()
+            console.log("cluster.js loaded")
+        }
+
+
 
     }
 
     onMarkerClick = (properties, marker, e) => {
-        console.log("onMarkerClick")
-        console.log("marker")
-        console.log(marker)
-        console.log("properties")
-        console.log(properties)
+        console.log("marker clicked!")
 
-        this.props.setActiveMarker(marker)
+
+        this.props.setActiveMarker(properties)
         this.props.setSelectedPlace(properties)
+
         this.setState(prevState => ({
             ...prevState,
             showingInfoWindow: !prevState.showingInfoWindow
         }))
+        console.log("showingInfoWindow")
+        console.log(this.state.showingInfoWindow)
     }
 
     onMapClicked = (props) => {
@@ -59,49 +71,34 @@ class MapContainer extends Component {
     };
 
 
-    displayMarkers = () => {
-
-        return this.props.memories_list.map((memory, index) => {
-            return (
-                <Marker
-                    name={memory.title}
-                    address={memory.camera_address}
-                    key={index}
-                    id={index}
-                    position={{
-                        lat: memory.latitude,
-                        lng: memory.longitude
-                    }}
-                    pov={{
-                        heading: memory.heading,
-                        pitch: memory.pitch
-                    }}
-                    zoom={memory.zoom}
-                    onClick={this.onMarkerClick} />
-            )
-
-        })
-    }
-
     togglePanorama = (e) => {
         this.props.toggleShowPanorama()
 
     }
 
 
-    onInfoWindowOpen(props, e) {
-        var { lat, lng } = this.props.dashboard.selectedPlace.position
+    onInfoWindowOpen = () => {
+
+        console.log("onInfoWindowOpen")
+        console.log("this.props.dashboard")
+        console.log(this.props.dashboard)
+        console.log("this.props.dashboard.selectedPlace")
+        console.log(this.props.dashboard.selectedPlace)
+
+
+        var { lat, lng } = this.props.dashboard.selectedPlace.markerposition
         var { heading, pitch } = this.props.dashboard.selectedPlace.pov
         var zoom = this.props.dashboard.selectedPlace.zoom
-        console.log(zoom)
+
         const coordinates = { lat: parseFloat(lat), lng: parseFloat(lng) };
         const markerId = this.props.dashboard.selectedPlace.id
         const photoSrc = this.props.memories_list[markerId].photo
         const memory_description = this.props.memories_list[markerId].description
         const content = (
-            <div>
+            <div className="FrontPageInfoWindow">
                 <h3 > {this.props.dashboard.selectedPlace.name}</h3>
-
+                {console.log("this.props.dashboard.selectedPlace.name")}
+                {console.log(this.props.dashboard.selectedPlace.name)}
                 <div id="infoWindowContent">
                     <div id="memory">
                         <img src={photoSrc} width="100%" height="100%"></img>
@@ -113,7 +110,10 @@ class MapContainer extends Component {
             </div>
         )
 
-        ReactDOM.render(React.Children.only(content), document.getElementById("InfoWindowContent"));
+        //ReactDOM.render(React.Children.only(content), document.getElementById("InfoWindowContent"));
+
+
+        ReactDOM.render(content, document.getElementById("InfoWindowContent"));
 
         var panorama = new window.google.maps.StreetViewPanorama(
             document.getElementById('pano'), {
@@ -127,24 +127,19 @@ class MapContainer extends Component {
         console.log("panorama")
         console.log(panorama)
 
-        panorama.addListener('position_changed', function () {
-        });
-
-        panorama.addListener('pov_changed', function () {
-        });
-
-        //map.setStreetView(panorama);
-
     }
+
 
 
 
     render() {
 
-        return (this.props.panoramaReady && this.props.memories_list.length) ? (
+        return (this.props.dashboard.googleApiLoaded && this.props.dashboard.clustersLoaded) ? (
 
             <div className="mapContainerStyle">
                 {console.log("started whole map process")}
+
+
                 <Map id='mapcontainer'
                     google={this.props.google}
                     onClick={this.onMapClicked}
@@ -152,16 +147,19 @@ class MapContainer extends Component {
                     initialCenter={{ lat: 45.5017, lng: - 73.58781 }
                     }
                 >
-                    {this.displayMarkers()}
+
+                    <MarkerCluster
+                        markers={this.props.memories_list}
+                        click={this.onMarkerClick}
+                    />
+
                     <InfoWindow
                         marker={this.props.dashboard.activeMarker}
                         visible={
                             true
                         }
                         maxWidth="800px"
-                        onOpen={e => {
-                            this.onInfoWindowOpen(this.props, e);
-                        }}
+                        onOpen={this.onInfoWindowOpen}
                     >
 
                         <div id="InfoWindowContent" />
@@ -169,7 +167,7 @@ class MapContainer extends Component {
                     </InfoWindow>
                 </Map >
                 {console.log("got to the end")}
-            </div>
+            </div >
 
         ) : (null)
 
@@ -180,15 +178,16 @@ class MapContainer extends Component {
 
 const mapStateToProps = state => ({
     dashboard: state.dashboard,
+    mapSet: state.dashboard.mapSet,
     memories_list: state.memories.memories,
-    panoramaReady: state.streetview.panoramaReady
 })
 
 
 export default connect(mapStateToProps, {
-    getPanorama, getMemories, emptyMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker,
+    getPanorama, getMemories, emptyMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker, getGoogleAPI, getCluster,
     setSelectedPlace
 })((GoogleApiWrapper({
     apiKey: 'AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk'
 }))(MapContainer))
+
 

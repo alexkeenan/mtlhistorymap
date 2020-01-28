@@ -12,6 +12,7 @@ import AlertTemplate from "react-alert-template-basic";
 import Alerts from './Alerts'
 
 import MapContainer from './MapContainer'
+import FrontPage from './FrontPage'
 import Header from './Header'
 import About from './About'
 import Register from "./accounts/Register"
@@ -47,7 +48,7 @@ class App extends Component {
               <div className="container"></div>
               <Switch>
                 <PrivateRoute exact path="/add-memory" component={MemoryForm} />
-                <Route exact path="/" component={MapContainer} />
+                <Route exact path="/" component={FrontPage} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/login" component={Login} />
