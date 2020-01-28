@@ -11,7 +11,7 @@ import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import Alerts from './Alerts'
 
-import MapContainer from './MapContainer'
+import MapContainer from './OLD_MapContainer'
 import FrontPage from './FrontPage'
 import Header from './Header'
 import About from './About'

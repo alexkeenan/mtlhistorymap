@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import ReactDOM from 'react-dom'
-
 import MarkerCluster from './markerCluster'
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import { connect } from 'react-redux'
@@ -32,17 +31,14 @@ class MapContainer extends Component {
         this.props.emptyMemories();
         this.props.getMemories();
 
-
         if (!this.props.dashboard.googleApiLoaded) {
 
             this.props.getGoogleAPI()
-            console.log("google api loaded")
         }
 
 
         if (!this.props.dashboard.clustersLoaded) {
             this.props.getCluster()
-            console.log("cluster.js loaded")
         }
 
 
@@ -50,18 +46,12 @@ class MapContainer extends Component {
     }
 
     onMarkerClick = (properties, marker, e) => {
-        console.log("marker clicked!")
-
-
         this.props.setActiveMarker(properties)
         this.props.setSelectedPlace(properties)
-
         this.setState(prevState => ({
             ...prevState,
             showingInfoWindow: !prevState.showingInfoWindow
         }))
-        console.log("showingInfoWindow")
-        console.log(this.state.showingInfoWindow)
     }
 
     onMapClicked = (props) => {
@@ -79,13 +69,6 @@ class MapContainer extends Component {
 
     onInfoWindowOpen = () => {
 
-        console.log("onInfoWindowOpen")
-        console.log("this.props.dashboard")
-        console.log(this.props.dashboard)
-        console.log("this.props.dashboard.selectedPlace")
-        console.log(this.props.dashboard.selectedPlace)
-
-
         var { lat, lng } = this.props.dashboard.selectedPlace.markerposition
         var { heading, pitch } = this.props.dashboard.selectedPlace.pov
         var zoom = this.props.dashboard.selectedPlace.zoom
@@ -97,8 +80,6 @@ class MapContainer extends Component {
         const content = (
             <div className="FrontPageInfoWindow">
                 <h3 > {this.props.dashboard.selectedPlace.name}</h3>
-                {console.log("this.props.dashboard.selectedPlace.name")}
-                {console.log(this.props.dashboard.selectedPlace.name)}
                 <div id="infoWindowContent">
                     <div id="memory">
                         <img src={photoSrc} width="100%" height="100%"></img>
@@ -111,8 +92,6 @@ class MapContainer extends Component {
         )
 
         //ReactDOM.render(React.Children.only(content), document.getElementById("InfoWindowContent"));
-
-
         ReactDOM.render(content, document.getElementById("InfoWindowContent"));
 
         var panorama = new window.google.maps.StreetViewPanorama(
@@ -124,9 +103,6 @@ class MapContainer extends Component {
             zoom: zoom
         });
 
-        console.log("panorama")
-        console.log(panorama)
-
     }
 
 
@@ -137,9 +113,6 @@ class MapContainer extends Component {
         return (this.props.dashboard.googleApiLoaded && this.props.dashboard.clustersLoaded) ? (
 
             <div className="mapContainerStyle">
-                {console.log("started whole map process")}
-
-
                 <Map id='mapcontainer'
                     google={this.props.google}
                     onClick={this.onMapClicked}
@@ -166,22 +139,17 @@ class MapContainer extends Component {
 
                     </InfoWindow>
                 </Map >
-                {console.log("got to the end")}
             </div >
 
         ) : (null)
-
-
     }
 }
-
 
 const mapStateToProps = state => ({
     dashboard: state.dashboard,
     mapSet: state.dashboard.mapSet,
     memories_list: state.memories.memories,
 })
-
 
 export default connect(mapStateToProps, {
     getPanorama, getMemories, emptyMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker, getGoogleAPI, getCluster,

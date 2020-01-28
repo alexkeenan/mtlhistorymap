@@ -8,7 +8,6 @@ const markerCluster = (props) => {
 
     useEffect(() => {
         if (map && markers) {
-            console.log("at the useEffect part")
             var mapMarkers = markers.map((memory, index) => {
 
                 console.log("memory")
@@ -42,16 +41,10 @@ const markerCluster = (props) => {
                     click(entry)
                 })
 
-                console.log("entry")
-                console.log(entry)
-
                 return entry
             })
 
             const clusterer = new MarkerClusterer(map, mapMarkers, { imagePath: 'https://mtlhistory-files.s3.amazonaws.com/media/mapicons/m' })
-
-            console.log("clusterer")
-            console.log(clusterer)
 
             return () => {
                 //console.log('Cleaning up markers')

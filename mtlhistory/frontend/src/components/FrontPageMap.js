@@ -16,7 +16,6 @@ export class FrontPageMap extends Component {
         this.googleMapRef = React.createRef();
     }
 
-
     createGoogleMap = () => {
 
         return new window.google.maps.Map(this.googleMapRef.current, {
@@ -28,22 +27,16 @@ export class FrontPageMap extends Component {
         });
     }
 
-
-
     componentDidMount() {
-
         //even though google-map-react loads the api for its needs, I will need to use it directly
         //and need to know when it's finished loading
         if (!this.props.dashboard.googleApiLoaded) {
             this.props.getGoogleAPI()
         }
 
-
         if (!this.props.dashboard.clustersLoaded) {
             this.props.getCluster()
         }
-
-
     }
 
     componentDidUpdate() {
@@ -52,8 +45,6 @@ export class FrontPageMap extends Component {
             this.props.setMap(this.googleMap)
         }
     }
-
-
 
     render() {
 
@@ -72,7 +63,6 @@ const mapStateToProps = state => ({
     dashboard: state.dashboard,
     mapSet: state.dashboard.mapSet
 })
-
 
 export default connect(mapStateToProps, {
     setLatLng, getGoogleAPI, getCluster, setMap, toggleInfoWindow
