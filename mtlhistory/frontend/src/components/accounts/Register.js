@@ -45,6 +45,8 @@ class Register extends Component {
 
 
     render() {
+        var Recaptcha = require('react-recaptcha');
+
         if (this.props.isAuthenticated) {
             return <Redirect to="/" />;
         }
@@ -99,6 +101,12 @@ class Register extends Component {
                                 Register
               </button>
                         </div>
+
+                        <Recaptcha
+                            sitekey="6LdAZ9UUAAAAAHYSuHvTPF1tBsKpRUX0yIdfu3FD"
+                        />
+
+
                         <p>
                             Already have an account? <Link to="/login">Login</Link>
                         </p>

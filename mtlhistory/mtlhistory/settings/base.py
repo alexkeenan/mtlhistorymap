@@ -133,6 +133,6 @@ STATIC_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.dirname(BASE
 
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media/')
 
-
-
+#RECAPTCHA
+GOOGLE_RECAPTCHA_SECRET_KEY = config('RECAPTCHA_SECRET_KEY')
 
