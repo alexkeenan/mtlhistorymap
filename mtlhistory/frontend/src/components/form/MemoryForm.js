@@ -34,8 +34,8 @@ class MemoryForm extends React.Component {
 
         var camera_address = document.getElementById('camera_address').value
 
-        const { title, description, photo, video, audio, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category } = this.props.memoryFormVars
-        var memory = { title, description, camera_address, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category }
+        const { title, description, photo, video, audio, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category, copyrightholder, source, sourcelink } = this.props.memoryFormVars
+        var memory = { title, description, camera_address, old_address, longitude, latitude, heading, pitch, zoom, dateofmemory, owner, category, copyrightholder, source, sourcelink }
 
 
         //only add if user added it. These variables are not required. Even if I state them in the django model as not required, I still get problems for some reason
@@ -339,6 +339,41 @@ class MemoryForm extends React.Component {
                                 name="description"
                                 onChange={this.onChange}
                                 value={this.props.memoryFormVars.description}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Source</label>
+                            <textarea
+                                className="form-control"
+                                type="text"
+                                name="source"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.source}
+                                placeholder="Where did this come from?"
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Source Link</label>
+                            <textarea
+                                className="form-control"
+                                type="text"
+                                name="sourcelink"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.sourcelink}
+                                placeholder="www.whereyourmemorycamefrom.com"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Copyright Holder</label>
+                            <textarea
+                                className="form-control"
+                                type="text"
+                                name="copyrightholder"
+                                onChange={this.onChange}
+                                value={this.props.memoryFormVars.copyrightholder}
+                                placeholder="Who is the copyright holder?"
                             />
                         </div>
 

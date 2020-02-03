@@ -38,7 +38,6 @@ export default function (state = initialState, action) {
                 ...state,
                 memories: [...state.memories]
             };
-
         case GET_MEMORY_FORM:
             return {
                 ...state,

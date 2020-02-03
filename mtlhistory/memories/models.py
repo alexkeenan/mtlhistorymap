@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 
 
 import requests
+#from taggit.managers import TaggableManager
+#https://dev.to/coderasha/how-to-add-tags-to-your-models-in-django-django-packages-series-1-3704
+
 
 GKEY="AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk"
 mapquestKEY="OybGzsSmlQs1ANATGf1bjlGC5VdH9VUZ"
@@ -44,6 +47,12 @@ class Memory(models.Model):
     dateofmemory= models.DateField(null=True,blank=True,default=None)
     owner=models.ForeignKey(User,related_name="memories",null=True,on_delete=models.SET_NULL)
     category = models.ManyToManyField(MemoryCategory,null=True,blank=True)
+    #tags = TaggableManager()
+    source=models.CharField(max_length=50,null=True,blank=True,default="Where did this come from?")
+    sourcelink=models.URLField(null=True,blank=True,default="Did it come from another site?")
+    copyrightholder=models.CharField(max_length=50,null=True,blank=True,default="Who is the copyright holder?")
+
+
     #one picture could belong to many categories
 
     def __str__(self):

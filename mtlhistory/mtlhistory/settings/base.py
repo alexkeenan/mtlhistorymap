@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'knox',
     'memories',
     'corsheaders',
-    'storages'
+    'storages',
 
 ]
 

@@ -110,6 +110,10 @@ class MapContainer extends Component {
 
     render() {
 
+        const containerStyle = { position: 'absolute', width: '100%', height: '89.5%' }
+
+
+
         return (this.props.dashboard.googleApiLoaded && this.props.dashboard.clustersLoaded) ? (
 
             <div className="mapContainerStyle">
@@ -117,8 +121,9 @@ class MapContainer extends Component {
                     google={this.props.google}
                     onClick={this.onMapClicked}
                     zoom={8}
-                    initialCenter={{ lat: 45.5017, lng: - 73.58781 }
-                    }
+                    initialCenter={{ lat: 45.5017, lng: - 73.58781 }}
+                    streetViewControl={false}
+                    containerStyle={containerStyle}
                 >
 
                     <MarkerCluster

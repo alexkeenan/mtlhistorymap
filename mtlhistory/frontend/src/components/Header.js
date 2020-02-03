@@ -19,6 +19,11 @@ class Header extends Component {
 
         const guestLinks = (
             <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
+                <li className="nav-link">
+
+                    <NavLink className="text-light" to="/login" onClick={this.props.getMemoryForm}>Add Memory</NavLink>
+
+                </li>
                 <li className="nav-item">
                     <Link to="/register" className="nav-link" >Register
                     </Link>
