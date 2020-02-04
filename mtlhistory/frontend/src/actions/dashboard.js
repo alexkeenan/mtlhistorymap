@@ -28,8 +28,11 @@ export const setActiveMarker = activeMarker => dispatch => {
 }
 
 export const getGoogleAPI = activeMarker => dispatch => {
+
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBo5X5wnWjZuNrmmAnIon65aH2lcAbgDIU&libraries=places`;
+
+    //script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBo5X5wnWjZuNrmmAnIon65aH2lcAbgDIU&libraries=places`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&libraries=places`;
 
 
     script.async = true;

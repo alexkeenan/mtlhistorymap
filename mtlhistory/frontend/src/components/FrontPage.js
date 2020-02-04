@@ -160,7 +160,8 @@ export default connect(mapStateToProps, {
     setSelectedPlace
 })((GoogleApiWrapper({
     apiKey:
-        'AIzaSyBo5X5wnWjZuNrmmAnIon65aH2lcAbgDIU'
+        process.env.API_KEY
+    //'AIzaSyBo5X5wnWjZuNrmmAnIon65aH2lcAbgDIU'
 }))(MapContainer))
 
 
