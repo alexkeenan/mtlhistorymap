@@ -216,8 +216,3 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, { getMemoryForm, updateMemoryForm })(MemoryStreetView)
 
-//the google api wrapper will mess up my normal panorama from showing. Why? who knows
-//<div id="pano" ref={this.panDiv}></div>
-
-//export default connect(mapStateToProps, { getMemoryForm, updateMemoryForm })((GoogleApiWrapper({ apiKey: 'AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk' }))(MemoryStreetView))
-

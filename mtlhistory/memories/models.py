@@ -9,9 +9,8 @@ import requests
 #https://dev.to/coderasha/how-to-add-tags-to-your-models-in-django-django-packages-series-1-3704
 
 
-GKEY="AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk"
-mapquestKEY="OybGzsSmlQs1ANATGf1bjlGC5VdH9VUZ"
-
+#Not really necessary
+"""
 def get_geocode(address):
     address=address.replace(" ","+")
     response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address='+address+"&key="+GKEY)
@@ -19,7 +18,7 @@ def get_geocode(address):
     resp_json_payload = response.json()
 
     return resp_json_payload['results'][0]['geometry']['location']
-
+"""
 
 #got the geolocation from https://developer.mapquest.com/plan_purchase/steps/business_edition/business_edition_free/register
 
@@ -47,10 +46,12 @@ class Memory(models.Model):
     dateofmemory= models.DateField(null=True,blank=True,default=None)
     owner=models.ForeignKey(User,related_name="memories",null=True,on_delete=models.SET_NULL)
     category = models.ManyToManyField(MemoryCategory,null=True,blank=True)
+    
+    #the below vars caused my remote site to completely crash. will have to cross this bridge at some point.
     #tags = TaggableManager()
-    source=models.CharField(max_length=50,null=True,blank=True,default="Where did this come from?")
-    sourcelink=models.URLField(null=True,blank=True,default="Did it come from another site?")
-    copyrightholder=models.CharField(max_length=50,null=True,blank=True,default="Who is the copyright holder?")
+    #source=models.CharField(max_length=50,null=True,blank=True,default="Where did this come from?")
+    #sourcelink=models.URLField(null=True,blank=True,default="Did it come from another site?")
+    #copyrightholder=models.CharField(max_length=50,null=True,blank=True,default="Who is the copyright holder?")
 
 
     #one picture could belong to many categories
@@ -59,9 +60,11 @@ class Memory(models.Model):
         return self.title
 
     def save(self,*args,**kwargs):
+        """
         if self.longitude==None and self.camera_address!=None:
             coordinates=get_geocode(self.camera_address)
             self.latitude=coordinates["lat"]
             self.longitude=coordinates["lng"]
+        """
         super().save(*args,**kwargs)
 

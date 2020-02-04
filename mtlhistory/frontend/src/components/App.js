@@ -37,6 +37,7 @@ class App extends Component {
   }
   //<Alerts />
   render() {
+
     return (
       <Provider store={store}>
         <AlertProvider template={AlertTemplate} {...alertOptions}>

@@ -32,7 +32,6 @@ class MapContainer extends Component {
         this.props.getMemories();
 
         if (!this.props.dashboard.googleApiLoaded) {
-
             this.props.getGoogleAPI()
         }
 
@@ -160,7 +159,8 @@ export default connect(mapStateToProps, {
     getPanorama, getMemories, emptyMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker, getGoogleAPI, getCluster,
     setSelectedPlace
 })((GoogleApiWrapper({
-    apiKey: 'AIzaSyBMNy2d4VK0AWVfUSDYe3luvrFykVhNsZk'
+    apiKey:
+        'AIzaSyBo5X5wnWjZuNrmmAnIon65aH2lcAbgDIU'
 }))(MapContainer))
 
 
