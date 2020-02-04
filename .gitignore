@@ -1,6 +1,7 @@
 pics/
 scrapping_code/
 node_modules/
+.env
 mtlhistory/media/
 mtlhistory/frontend/static/frontend/img/
 mtlhistory/settings.ini
@@ -11,10 +12,11 @@ mtlhistory/mtlhistory/settings/production.py
 mtlhistory/mtlhistory/settings/production_2.py
 mtlhistory/mtlhistory/wsgi.py
 mtlhistory/wsgi.py
-
+mtlhistory/memories/migrations/
+OLD_*.js
+Old_*.js
 static
 static/
-mtlhistory/frontend/src/actions/memories.js
-mtlhistory/frontend/src/actions/memories copy.js
+
 
 
