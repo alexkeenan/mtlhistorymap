@@ -8,11 +8,17 @@ import { createMessage } from "../../actions/messages";
 
 
 class Register extends Component {
-    state = {
-        username: "",
-        email: "",
-        password: "",
-        password2: ""
+    constructor() {
+        super()
+
+        this.verifyCallback = this.verifyCallback.bind(this)
+        this.state = {
+            username: "",
+            email: "",
+            password: "",
+            password2: "",
+        }
+
     }
 
     static propTypes = {
@@ -23,17 +29,24 @@ class Register extends Component {
     onSubmit = e => {
         e.preventDefault();
         const { username, email, password, password2 } = this.state
-        if (password !== password2) {
-            this.props.createMessage({ passwordNotMatch: "Passwords do not match" })
+
+        if (this.isVerified) {
+            if (password !== password2) {
+                this.props.createMessage({ passwordNotMatch: "Passwords do not match" })
+            }
+            else {
+                const User = {
+                    username,
+                    password,
+                    email
+                }
+                this.props.register(User)
+            }
         }
         else {
-            const User = {
-                username,
-                password,
-                email
-            }
-            this.props.register(User)
+            this.props.createMessage({ notVerified: "Did not pass reCaptcha test" })
         }
+
 
     }
 
@@ -45,7 +58,7 @@ class Register extends Component {
 
 
     render() {
-        var Recaptcha = require('react-recaptcha');
+
 
         if (this.props.isAuthenticated) {
             return <Redirect to="/" />;
@@ -101,11 +114,6 @@ class Register extends Component {
                                 Register
               </button>
                         </div>
-
-                        <Recaptcha
-                            sitekey="6LdAZ9UUAAAAAHYSuHvTPF1tBsKpRUX0yIdfu3FD"
-                        />
-
 
                         <p>
                             Already have an account? <Link to="/login">Login</Link>

@@ -30,6 +30,7 @@ export class Alerts extends Component {
             if (message.deleteMemory) alert.success(message.deleteMemory);
             if (message.addMemory) alert.success(message.addMemory);
             if (message.passwordNotMatch) alert.error(message.passwordNotMatch);
+            if (message.notVerified) alert.error(message.notVerified);
         }
     }
 

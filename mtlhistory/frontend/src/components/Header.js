@@ -23,7 +23,6 @@ class Header extends Component {
 
                     <NavLink className="text-light" to="/login" onClick={this.props.getMemoryForm}>Add Memory</NavLink>
 
-
                 </li>
                 <li className="nav-item">
                     <Link to="/register" className="nav-link" >Register
