@@ -7,11 +7,11 @@ const markerCluster = (props) => {
     const { map, google, markers, click } = props
 
     useEffect(() => {
+
         if (map && markers) {
+
             var mapMarkers = markers.map((memory, index) => {
 
-                console.log("memory")
-                console.log(memory)
 
                 const entry = new google.maps.Marker({
                     markerposition: {
@@ -56,29 +56,6 @@ const markerCluster = (props) => {
     return (null)
 
 }
-
-/*
-markerCluster.propTypes = {
-    map: PropTypes.object,
-    google: PropTypes.object,
-    markers: PropTypes.arrayOf(PropTypes.shape({
-        position: PropTypes.shape({
-            lat: PropTypes.number.isRequired,
-            lng: PropTypes.number.isRequired,
-        }).isRequired,
-        name: PropTypes.string.isRequired,
-        address: PropTypes.string.isRequired,
-        key: PropTypes.number.isRequired,
-        id: PropTypes.number.isRequired,
-        pov: PropTypes.shape({
-            heading: PropTypes.number.isRequired,
-            pitch: PropTypes.number.isRequired,
-        }).isRequired,
-        zoom: PropTypes.number.isRequired,
-    })),
-}
-
-*/
 
 
 export default markerCluster

@@ -11,7 +11,6 @@ class Register extends Component {
     constructor() {
         super()
 
-        this.verifyCallback = this.verifyCallback.bind(this)
         this.state = {
             username: "",
             email: "",

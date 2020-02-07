@@ -46,6 +46,20 @@ class MemoryViewSet(viewsets.ModelViewSet):
         serializer.save()
 
 
+### memory categories
+
+class JustViewMemoryCategoriesViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+
+    serializer_class = MemoryCategorySerializer
+
+    def get_queryset(self):
+        return MemoryCategory.objects.all()
+
+
+
 class MemoryCategoriesViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated,

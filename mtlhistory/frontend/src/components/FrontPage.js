@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import ReactDOM from 'react-dom'
 import MarkerCluster from './markerCluster'
+import MemoryFilter from './MemoryFilter'
+
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import { connect } from 'react-redux'
-import { getMemories, emptyMemories } from '../actions/memories'
+import { getMemories, emptyMemories, filterMemories } from '../actions/memories'
 import { getGoogleAPI, getCluster } from '../actions/dashboard'
 import { getPanorama } from '../actions/streetview'
 import {
@@ -29,7 +31,7 @@ class MapContainer extends Component {
 
     componentDidMount() {
         this.props.emptyMemories();
-        this.props.getMemories();
+        this.props.getMemories(); //pulls all memories from the database
 
         if (!this.props.dashboard.googleApiLoaded) {
             this.props.getGoogleAPI()
@@ -40,9 +42,10 @@ class MapContainer extends Component {
             this.props.getCluster()
         }
 
-
-
     }
+
+
+
 
     onMarkerClick = (properties, marker, e) => {
         this.props.setActiveMarker(properties)
@@ -74,8 +77,8 @@ class MapContainer extends Component {
 
         const coordinates = { lat: parseFloat(lat), lng: parseFloat(lng) };
         const markerId = this.props.dashboard.selectedPlace.id
-        const photoSrc = this.props.memories_list[markerId].photo
-        const memory_description = this.props.memories_list[markerId].description
+        const photoSrc = this.props.memories.visibleMemories[markerId].photo
+        const memory_description = this.props.memories.visibleMemories[markerId].description
         const content = (
             <div className="FrontPageInfoWindow">
                 <h3 > {this.props.dashboard.selectedPlace.name}</h3>
@@ -111,8 +114,33 @@ class MapContainer extends Component {
 
         const containerStyle = { position: 'absolute', width: '100%', height: '89.5%' }
 
+        // controls for the map
+
+        // mapTypeId: mapTypeIds[mapTypeFromProps],
+        //     center: center,
+        //         zoom: this.props.zoom,
+        //             maxZoom: this.props.maxZoom,
+        //                 minZoom: this.props.minZoom,
+        //                     clickableIcons: !!this.props.clickableIcons,
+        //                         disableDefaultUI: this.props.disableDefaultUI,
+        //                             zoomControl: this.props.zoomControl,
+        //                                 mapTypeControl: this.props.mapTypeControl,
+        //                                     scaleControl: this.props.scaleControl,
+        //                                         streetViewControl: this.props.streetViewControl,
+        //                                             panControl: this.props.panControl,
+        //                                                 rotateControl: this.props.rotateControl,
+        //                                                     fullscreenControl: this.props.fullscreenControl,
+        //                                                         scrollwheel: this.props.scrollwheel,
+        //                                                             draggable: this.props.draggable,
+        //                                                                 keyboardShortcuts: this.props.keyboardShortcuts,
+        //                                                                     disableDoubleClickZoom: this.props.disableDoubleClickZoom,
+        //                                                                         noClear: this.props.noClear,
+        //                                                                             styles: this.props.styles,
+        //                                                                                 gestureHandling: this.props.gestureHandling
 
 
+        console.log("RENDERING")
+        console.log("this.props.memories.visibleMemories", this.props.memories.visibleMemories)
         return (this.props.dashboard.googleApiLoaded && this.props.dashboard.clustersLoaded) ? (
 
             <div className="mapContainerStyle">
@@ -122,11 +150,13 @@ class MapContainer extends Component {
                     zoom={8}
                     initialCenter={{ lat: 45.5017, lng: - 73.58781 }}
                     streetViewControl={false}
+                    disableDefaultUI={true}
+                    mapTypeControl={false}
                     containerStyle={containerStyle}
                 >
 
                     <MarkerCluster
-                        markers={this.props.memories_list}
+                        markers={this.props.memories.visibleMemories}
                         click={this.onMarkerClick}
                     />
 
@@ -142,7 +172,13 @@ class MapContainer extends Component {
                         <div id="InfoWindowContent" />
 
                     </InfoWindow>
+
+
+
+
                 </Map >
+
+                <MemoryFilter />
             </div >
 
         ) : (null)
@@ -152,11 +188,12 @@ class MapContainer extends Component {
 const mapStateToProps = state => ({
     dashboard: state.dashboard,
     mapSet: state.dashboard.mapSet,
-    memories_list: state.memories.memories,
+    memories: state.memories,
+
 })
 
 export default connect(mapStateToProps, {
-    getPanorama, getMemories, emptyMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker, getGoogleAPI, getCluster,
+    getPanorama, getMemories, emptyMemories, toggleInfoWindow, toggleShowPanorama, setActiveMarker, getGoogleAPI, getCluster, filterMemories,
     setSelectedPlace
 })((GoogleApiWrapper({
     apiKey:

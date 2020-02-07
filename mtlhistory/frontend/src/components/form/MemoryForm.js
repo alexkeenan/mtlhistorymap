@@ -102,7 +102,10 @@ class MemoryForm extends React.Component {
         else {
 
             if (name === "category") {
-                value = [...target.options].filter(o => o.selected).map(o => o.id)
+                console.log("at category section in form")
+                console.log("target.options", target.options)
+                console.log("[...target.options].filter(o => o.selected)", [...target.options].filter(o => o.selected))
+                value = [...target.options].filter(o => o.selected).map(o => parseInt(o.id))
             }
 
             else {
@@ -293,13 +296,22 @@ class MemoryForm extends React.Component {
         //     </div>
 
 
+        // var categoriesOptions = () => {
+        //     for (var key in Object.keys(this.props.categories)) {
+        //         var each_category = this.props.categories[key]
+
+        //             < option name = "categories" id = { each_category.id } value = { each_category.category } > { each_category.category }</option >
+        //     }
+        // }
+
 
         return (
 
 
 
 
-            <Fragment>
+
+            < Fragment >
                 <div className="card card-body mt-4 mb-4">
                     <h2>Add Memory</h2>
                     <div id="infoWindowContent_input">
@@ -337,7 +349,7 @@ class MemoryForm extends React.Component {
 
                         </div>
                         <div className="form-group">
-                            <label>"Camera" Address (Address according to google maps)</label>
+                            <label>"Camera" Address (type in an address or move the peg man on from the map)</label>
                             <input
                                 className="form-control"
                                 id="camera_address"
@@ -388,6 +400,7 @@ class MemoryForm extends React.Component {
                                 type="text"
                                 name="category"
                                 onChange={this.onChange}>
+
                                 {this.props.categories.map(each_category => (
                                     < option name="categories" id={each_category.id} value={each_category.category} > {each_category.category}</option>
                                 ))}

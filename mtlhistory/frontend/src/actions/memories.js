@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {
-    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM, EMPTY_MEMORIES
+    GET_MEMORIES, DELETE_MEMORY, ADD_MEMORY, GET_MEMORY_SUBJECT_CATEGORY, GET_MEMORY_FORM, UPDATE_MEMORY_FORM, EMPTY_MEMORIES, FILTER_MEMORIES, CHECK_UNCHECK_CATEGORY
 } from "./types";
 
 import { createMessage, returnErrors } from "./messages"
@@ -20,10 +20,7 @@ export const getMemories = () => (dispatch, getState) => {
         .catch(err => console.log(err.response.data))
 }
 
-
 ///CAREFUL, there's a prod version of this. Any changes you make here, make sure to adjust over there.
-
-
 
 //empty memories is so that when you switch back to the home page after having created new memories, the map will only load AFTER you've gotten yourself the new set of memories
 //what would happen is that it would load the map twice, once before the new set of memories was finished loading and another once it was. That caused issues with the map.
@@ -34,11 +31,36 @@ export const emptyMemories = () => (dispatch) => {
     })
 }
 
-export const getCategories = () => (dispatch, getState) => {
+export const filterMemories = (filters) => (dispatch) => {
+    dispatch({
+        type: FILTER_MEMORIES,
+        payload: filters
+    })
+}
+
+export const checkUncheckCategory = (category_string) => (dispatch) => {
+
+    dispatch({
+        type: CHECK_UNCHECK_CATEGORY,
+        payload: category_string
+    })
+}
+
+export const getCategories = () => (dispatch) => {
     console.log('getting categories')
     axios
-        .get('api/memorycategories/', TokenConfig(getState))
+        //.get('api/memorycategories/', TokenConfig(getState))
+        .get('api/viewmemorycategories/')  //taking away the need for login, but user can only see the categories, not create
         .then(res => {
+            //giving the checked attribute for each key, useful in the filter
+
+
+            for (var key in res.data) {
+                if (res.data.hasOwnProperty(key)) {
+                    res.data[key] = { ...res.data[key], checked: true };
+                }
+            }
+
 
             dispatch({
                 type: GET_MEMORY_SUBJECT_CATEGORY,
@@ -53,7 +75,18 @@ export const getCategories = () => (dispatch, getState) => {
         })
 }
 
-export const getMemoryForm = () => (dispatch, getState) => {
+// export const toggleCategoryCheck = (index) => (dispatch) => {
+
+//     dispatch({
+//         type: TOGGLE_CATEGORY_CHECK,
+//         payload: { index }
+//     })
+
+// }
+
+
+
+export const getMemoryForm = () => (dispatch) => {
     dispatch({
         type: GET_MEMORY_FORM,
         payload: {
@@ -78,6 +111,8 @@ export const getMemoryForm = () => (dispatch, getState) => {
             map: "",
             panorama: "",
             searchBox: "",
+
+
         }
     })
 }
@@ -143,7 +178,6 @@ export const addMemory = memory => (dispatch, getState) => {
             dispatch(createMessage({
                 addMemory: "Memory Created!"
             }))
-
 
         })
         .catch(err =>

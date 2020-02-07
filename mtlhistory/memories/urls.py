@@ -1,5 +1,5 @@
 from rest_framework import routers
-from .api import MemoryViewSet,JustViewMemories,MemoryCategoriesViewSet
+from .api import MemoryViewSet,JustViewMemories,MemoryCategoriesViewSet,JustViewMemoryCategoriesViewSet
 
 router = routers.DefaultRouter()
 # url prefix, viewset class, name (if you don't specify a name it will create one based on your url)
@@ -25,6 +25,8 @@ router.register('api/memory/categories', MemoryCategoriesViewSet, 'memory_catego
 # view or create memory categories
 #for some reason if you do api/memory/categories it won't work, but api/memorycategories will.
 router.register('api/memorycategories', MemoryCategoriesViewSet, 'memory_categories')
+
+router.register('api/viewmemorycategories', JustViewMemoryCategoriesViewSet, 'view_memory_categories')
 
 
 
