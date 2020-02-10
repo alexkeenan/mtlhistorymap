@@ -44,6 +44,7 @@
     "react-router-dom": "^5.1.2",
     "react-streetview": "^1.1.1",
     "react-transition-group": "^2.5.3",
+    "react-window": "^1.8.5",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",

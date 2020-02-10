@@ -3,6 +3,7 @@ scrapping_code/
 node_modules/
 .env
 mtlhistory/media/
+mtlhistory/media/images/
 mtlhistory/frontend/static/frontend/img/
 mtlhistory/settings.ini
 mtlhistory/manage.py

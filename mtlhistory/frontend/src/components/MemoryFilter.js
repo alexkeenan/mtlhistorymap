@@ -87,24 +87,27 @@ export class MemoryFilter extends Component {
         if (Object.keys(this.props.categories).length > 0) {
             return (
                 <div className="mapfilter" >
+                    <b>Memory types</b>
 
-                    {Object.keys(this.props.categories).map((key, index) => {
+                    {
+                        Object.keys(this.props.categories).map((key, index) => {
 
-                        var each_category = this.props.categories[key]
+                            var each_category = this.props.categories[key]
 
 
-                        return (
-                            < div key={each_category.id} >
-                                <Checkbox type="checkbox" id={each_category.id} key={each_category.id} name={each_category.category}
-                                    onChange={this.handleChange} checked={each_category.checked}
-                                />
-                                <label >{each_category.category}</label>
-                            </div >
-                        )
+                            return (
+                                < div key={each_category.id} >
+                                    <Checkbox type="checkbox" id={each_category.id} key={each_category.id} name={each_category.category}
+                                        onChange={this.handleChange} checked={each_category.checked}
+                                    />
+                                    <label >{each_category.category}</label>
+                                </div >
+                            )
 
-                    })}
+                        })
+                    }
 
-                </div>
+                </div >
             )
         }
         else {
