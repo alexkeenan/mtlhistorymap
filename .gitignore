@@ -16,8 +16,8 @@ mtlhistory/wsgi.py
 mtlhistory/memories/migrations/
 OLD_*.js
 Old_*.js
-static
-static/
+
+
 
 
 
