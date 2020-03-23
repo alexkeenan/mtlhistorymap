@@ -29,22 +29,22 @@ class Register extends Component {
         e.preventDefault();
         const { username, email, password, password2 } = this.state
 
-        if (this.isVerified) {
-            if (password !== password2) {
-                this.props.createMessage({ passwordNotMatch: "Passwords do not match" })
-            }
-            else {
-                const User = {
-                    username,
-                    password,
-                    email
-                }
-                this.props.register(User)
-            }
+        // if (this.isVerified) {
+        if (password !== password2) {
+            this.props.createMessage({ passwordNotMatch: "Passwords do not match" })
         }
         else {
-            this.props.createMessage({ notVerified: "Did not pass reCaptcha test" })
+            const User = {
+                username,
+                password,
+                email
+            }
+            this.props.register(User)
         }
+        // }
+        // else {
+        //     this.props.createMessage({ notVerified: "Did not pass reCaptcha test" })
+        // }
 
 
     }

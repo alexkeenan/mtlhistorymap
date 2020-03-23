@@ -87,7 +87,7 @@ export class MemoryFilter extends Component {
         if (Object.keys(this.props.categories).length > 0) {
             return (
                 <div className="mapfilter" >
-                    <b>Memory types</b>
+                    <h2 style={{ "color": "white" }}>Memory types</h2>
 
                     {
                         Object.keys(this.props.categories).map((key, index) => {
@@ -97,10 +97,25 @@ export class MemoryFilter extends Component {
 
                             return (
                                 < div key={each_category.id} >
+
+                                    {/* <input type="checkbox" checked data-toggle="toggle" data-size="xs" data-onstyle="primary" id={each_category.id} key={each_category.id} name={each_category.category}
+                                        onChange={this.handleChange} checked={each_category.checked}
+
+                                    /> */}
+                                    {/* 
                                     <Checkbox type="checkbox" id={each_category.id} key={each_category.id} name={each_category.category}
                                         onChange={this.handleChange} checked={each_category.checked}
-                                    />
-                                    <label >{each_category.category}</label>
+                                    /> */}
+
+
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id={each_category.id} key={each_category.id} name={each_category.category}
+                                            onChange={this.handleChange} checked={each_category.checked} />
+                                        <label class="custom-control-label" for={each_category.id}>{each_category.category}</label>
+                                    </div>
+
+
+
                                 </div >
                             )
 

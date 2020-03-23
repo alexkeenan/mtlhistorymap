@@ -21,15 +21,15 @@ class Header extends Component {
             <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
                 <li className="nav-link">
 
-                    <NavLink className="text-light" to="/login" onClick={this.props.getMemoryForm}>Add Memory</NavLink>
+                    <NavLink className="text-light biggerNavLink" to="/login" onClick={this.props.getMemoryForm}>Add Memory</NavLink>
 
                 </li>
                 <li className="nav-item">
-                    <Link to="/register" className="nav-link" >Register
+                    <Link to="/register" className="nav-link biggerNavLink" >Register
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/login" className="nav-link">
+                    <Link to="/login" className="nav-link biggerNavLink">
                         Login
           </Link>
                 </li>
@@ -46,13 +46,13 @@ class Header extends Component {
                 </span>
                 <li className="nav-link">
 
-                    <NavLink className="text-light" to="/add-memory" onClick={this.props.getMemoryForm}>Add Memory</NavLink>
+                    <NavLink className="text-light biggerNavLink" to="/add-memory" onClick={this.props.getMemoryForm}>Add Memory</NavLink>
 
                 </li>
                 <li className="nav-item">
                     <button
                         onClick={this.props.logout}
-                        className="nav-link btn btn-danger btn-sm text-light"
+                        className="nav-link btn btn-danger btn-sm text-light biggerNavLink"
                     >
                         Logout
                         </button>
@@ -69,9 +69,10 @@ class Header extends Component {
         */
 
         return (
-            < nav className="navbar navbar-expand-lg navbar-dark bg-dark" >
+            < nav className="navbar navbar-expand-lg navbar-dark bg-dark-blue" >
 
                 <Link to="/" className="navbar-brand">Map From The Past</Link>
+
 
                 <div className="collapse navbar-collapse" id="navbarColor02">
                     <ul className="navbar-nav">
@@ -79,7 +80,7 @@ class Header extends Component {
 
 
                         <li className="nav-item">
-                            <Link to="/about" className="nav-link">
+                            <Link to="/about" className="nav-link biggerNavLink">
                                 About
                             </Link>
                         </li>

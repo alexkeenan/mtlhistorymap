@@ -1,60 +1,85 @@
-      #map, #pano, #memory {
-        float: left;
-        height: 100%;
-        width: 50%;
-      }
+#map, #memory {
+  float: left;
+  height: 100%;
+  width: 50%;
+}
 
-      #infoWindowContent{
-        width:800px;
-        height:400px;
-        z-index:2 !important
+#pano{
+  float: left;
+  height: 100%;
+  width: 100%;
+}
 
-      }
 
-      #map_input, #pano_input, #memory_input {
-        float: left;
-        height: 100%;
-        width: 33%;
-      }
-      #memory_description{
-        float: left;
-      }
 
-      #infoWindowContent_input{
-        width:1200px;
-        height:400px;
-        margin:auto;
-        
-      }
+*{
+  font-family: 'Oswald', sans-serif;
+}
 
-      #frontpagemap{
-        height:100%;
-        
-        position:static !important;
-        
-        overflow:hidden !important;
-        /*
-        */
-      }
 
-      .navbar{
-        z-index:1 !important
-      }
+.gm-style-iw .gm-style-iw-c{ 
+  max-height:700px !important;
+}
+.gm-style-iw-d{
+  max-height:700px !important;
+}
 
-      .FrontPageInfoWindow{
-        z-index:2 !important
-      }
+#infoWindowContent{
 
-      .mapfilter{
-        z-index: 3 !important;
-        padding:5px;
-        display: block;
-        position: fixed;
-        background-color: white;
-        bottom:10%;
-        right:5%;
+  z-index:2 !important
 
-      }
+}
+
+.gm-style-iw .gm-style-iw-c{
+  max-height:50%;
+}
+
+#map_input, #pano_input, #memory_input {
+  float: left;
+  height: 100%;
+  width: 33%;
+}
+#memory_description{
+  float: left;
+}
+
+#infoWindowContent_input{
+  width:1200px;
+  height:400px;
+  margin:auto;
+  
+}
+
+#frontpagemap{
+  height:100%;
+  
+  position:static !important;
+  
+  overflow:hidden !important;
+  /*
+  */
+}
+
+.navbar{
+  z-index:1 !important
+}
+
+.FrontPageInfoWindow{
+  z-index:2 !important
+}
+
+.mapfilter{
+  z-index: 3 !important;
+  padding:5px;
+  display: block;
+  position: fixed;
+  background-color:#1A4E8F;
+  bottom:10%;
+  right:5%;
+  border-radius:5px;
+  color:white
+
+}
 .mapContainerStyle{
   z-index:0 !important;
   height: 70%;
@@ -69,4 +94,15 @@
 
     */
 }
-  
+
+.biggerNavLink{
+  font-size:1.2rem !important;
+}
+
+.bg-dark-blue{
+  background-color: #1A4E8F !important;
+}
+
+.myblue{
+  background-color: #1A4E8F !important;
+}
