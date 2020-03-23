@@ -37,6 +37,7 @@ class MapContainer extends Component {
             this.props.getGoogleAPI()
         }
 
+
         if (!this.props.dashboard.clustersLoaded) {
             this.props.getCluster()
         }
@@ -81,16 +82,12 @@ class MapContainer extends Component {
         const content = (
             <div className="FrontPageInfoWindow">
                 <h3 > {this.props.dashboard.selectedPlace.name}</h3>
-                <div id="infoWindowContent" className="row">
-
-                    <div className="col-sm-12">
-                        <img className="col-sm-6" id="memory" src={photoSrc} ></img>
-
-                        <div className="col-sm-6" id="pano"></div>
+                <div id="infoWindowContent">
+                    <div id="memory">
+                        <img src={photoSrc} width="100%" height="100%"></img>
                     </div>
-                    <div className="row">
-                        <div id="memory_description" className="col-sm-12">{memory_description}</div>
-                    </div>
+                    <div id="pano"></div>
+                    <div id="memory_description">{memory_description}</div>
                 </div>
 
             </div>
@@ -164,13 +161,11 @@ class MapContainer extends Component {
                     />
 
                     <InfoWindow
-                        className="col-sm-8"
                         marker={this.props.dashboard.activeMarker}
                         visible={
                             true
                         }
                         maxWidth="800px"
-                        maxHeight="800px"
                         onOpen={this.onInfoWindowOpen}
                     >
 

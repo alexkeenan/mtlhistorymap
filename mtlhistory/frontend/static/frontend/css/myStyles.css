@@ -1,37 +1,19 @@
-#map, #memory {
-  float: left;
-  height: 100%;
-  width: 50%;
-}
-
-#pano{
-  float: left;
-  height: 100%;
-  width: 100%;
-}
-
+      #map, #pano, #memory {
+        float: left;
+        height: 100%;
+        width: 50%;
+      }
 
 
 *{
   font-family: 'Oswald', sans-serif;
 }
 
-
-.gm-style-iw .gm-style-iw-c{ 
-  max-height:700px !important;
-}
-.gm-style-iw-d{
-  max-height:700px !important;
-}
-
 #infoWindowContent{
-
+  width:800px;
+  height:400px;
   z-index:2 !important
 
-}
-
-.gm-style-iw .gm-style-iw-c{
-  max-height:50%;
 }
 
 #map_input, #pano_input, #memory_input {
